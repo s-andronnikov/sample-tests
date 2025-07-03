@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "first_name": "Alice",
+    "last_name": "Johnson",
+    "email": "alice@example.com",
+    "phone": "+1122334455",
+    "address": "123 Main St, City, Country",
+    "notes": "Work contact",
+    "user_id": 1
+  },
+  {
+    "id": 2,
+    "first_name": "Bob",
+    "last_name": "Brown",
+    "email": "bob@example.com",
+    "phone": "+5544332211",
+    "address": "456 Oak St, City, Country",
+    "notes": "Personal contact",
+    "user_id": 1
+  },
+  {
+    "id": 3,
+    "first_name": "Charlie",
+    "last_name": "Davis",
+    "email": "charlie@example.com",
+    "phone": "+9988776655",
+    "address": "789 Pine St, City, Country",
+    "notes": "Client",
+    "user_id": 2
+  },
+  {
+    "id": 4,
+    "first_name": "Diana",
+    "last_name": "Wilson",
+    "email": "diana@example.com",
+    "phone": "+6677889900",
+    "address": "321 Elm St, City, Country",
+    "notes": "Supplier",
+    "user_id": 2
+  },
+  {
+    "id": 5,
+    "first_name": "Eva",
+    "last_name": "Martinez",
+    "email": "eva@example.com",
+    "phone": "+1324354657",
+    "address": "654 Maple St, City, Country",
+    "notes": "Business partner",
+    "user_id": 3
+  }
+]

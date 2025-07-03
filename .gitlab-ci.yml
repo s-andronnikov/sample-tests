@@ -1,0 +1,62 @@
+stages:
+  - lint
+  - test
+
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
+
+lint:
+  stage: lint
+  image: python:3.10-slim
+  before_script:
+    - pip install flake8 black isort
+  script:
+    - flake8 .
+    - black --check .
+    - isort --check .
+
+test-api:
+  stage: test
+  image: mcr.microsoft.com/playwright/python:v1.38.0-jammy
+  services:
+    - name: postgres:14-alpine
+      alias: postgres
+  variables:
+    DB_URL: postgresql://user:password@postgres:5432/testdb
+    POSTGRES_USER: user
+    POSTGRES_PASSWORD: password
+    POSTGRES_DB: testdb
+    HOST: ${TEST_HOST}
+    API_BASE_URL: ${TEST_API_URL}
+    HEADLESS_MODE: "True"
+  before_script:
+    - pip install poetry
+    - poetry install
+  script:
+    - poetry run pytest api/ -v
+
+test-ui:
+  stage: test
+  image: mcr.microsoft.com/playwright/python:v1.38.0-jammy
+  services:
+    - name: postgres:14-alpine
+      alias: postgres
+  variables:
+    DB_URL: postgresql://user:password@postgres:5432/testdb
+    POSTGRES_USER: user
+    POSTGRES_PASSWORD: password
+    POSTGRES_DB: testdb
+    HOST: ${TEST_HOST}
+    API_BASE_URL: ${TEST_API_URL}
+    HEADLESS_MODE: "True"
+  before_script:
+    - pip install poetry
+    - poetry install
+  script:
+    - poetry run pytest ui/ -v
+  artifacts:
+    paths:
+      - playwright-report/
+    when: always
+    expire_in: 1 week

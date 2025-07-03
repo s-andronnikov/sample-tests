@@ -1,0 +1,12 @@
+services:
+  tests:
+    restart: always
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    volumes:
+      - .:/app:delegated
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    env_file:
+      - .env
+    network_mode: host
