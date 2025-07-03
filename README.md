@@ -56,6 +56,33 @@ poetry run pytest api/
 poetry run pytest -m smoke
 ```
 
+## Makefile Commands
+
+The project includes a Makefile with useful commands for development:
+
+```bash
+# Show all available commands with descriptions
+make help
+
+# Run linting checks with pre-commit
+make lint
+
+# Format code with black and ruff
+make format
+
+# Clean up Python artifacts and cache
+make clean
+
+# Run all tests
+make test
+
+# Install all dependencies including dev tools
+make install
+
+# Update dependencies
+make update
+```
+
 ## Architecture
 
 ### Driver and BaseElement
