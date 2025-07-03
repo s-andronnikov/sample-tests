@@ -4,7 +4,7 @@ help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 lint: ## Run pre-commit checks on all files
-	pre-commit run --all-files
+	poetry run pre-commit run --all-files
 
 format: ## Format code with black and ruff
 	poetry run black .
@@ -28,7 +28,7 @@ install: ## Install dependencies with Poetry
 	pip install poetry==2.1.3
 	poetry install
 	poetry run pip install pre-commit
-	pre-commit install
+	poetry run pre-commit install
 
 update: ## Update dependencies with Poetry
 	poetry update
