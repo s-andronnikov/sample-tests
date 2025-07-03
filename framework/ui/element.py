@@ -5,6 +5,8 @@ from playwright.sync_api import Locator, expect
 
 from framework.ui.driver import Driver
 
+OP_COMMON_TIMEOUT = 5000
+
 
 @dataclass
 class By:
@@ -70,23 +72,23 @@ class BaseElement:
         expect(locator).to_be_visible(visible=should_visible, timeout=5000)
         return self
 
-    def click(self, timeout: int = 2000, force: bool = False) -> "BaseElement":
+    def click(self, timeout: int = OP_COMMON_TIMEOUT, force: bool = False) -> "BaseElement":
         self._get_locator().click(timeout=timeout, force=force)
         return self
 
-    def fill(self, value: str, timeout: int = 2000) -> "BaseElement":
+    def fill(self, value: str, timeout: int = OP_COMMON_TIMEOUT) -> "BaseElement":
         self._get_locator().fill(value, timeout=timeout)
         return self
 
-    def press(self, key: str, timeout: int = 2000) -> "BaseElement":
+    def press(self, key: str, timeout: int = OP_COMMON_TIMEOUT) -> "BaseElement":
         self._get_locator().press(key, timeout=timeout)
         return self
 
-    def check(self, timeout: int = 2000, force: bool = False) -> "BaseElement":
+    def check(self, timeout: int = OP_COMMON_TIMEOUT, force: bool = False) -> "BaseElement":
         self._get_locator().check(timeout=timeout, force=force)
         return self
 
-    def uncheck(self, timeout: int = 2000, force: bool = False) -> "BaseElement":
+    def uncheck(self, timeout: int = OP_COMMON_TIMEOUT, force: bool = False) -> "BaseElement":
         self._get_locator().uncheck(timeout=timeout, force=force)
         return self
 

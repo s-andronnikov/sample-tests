@@ -17,4 +17,3 @@ class BasePage:
     def get_page() -> Page:
         """Return the current page from the driver"""
         return Driver.get_driver()
-
