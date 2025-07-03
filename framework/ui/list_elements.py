@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Generic, Optional, TypeVar
+from typing import Optional, TypeVar
 
 from playwright.sync_api import Locator
 
@@ -8,7 +8,7 @@ from framework.ui.element import BaseElement, By
 T = TypeVar("T")
 
 
-class ListElement(BaseElement, Generic[T]):
+class ListElement[T](BaseElement):
     """Base class for list elements with iteration support"""
 
     def __init__(

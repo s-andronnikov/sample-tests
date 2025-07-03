@@ -3,6 +3,8 @@ from typing import Union
 
 from playwright.sync_api import Locator, expect
 
+from framework.ui.driver import Driver
+
 
 @dataclass
 class By:
@@ -37,8 +39,6 @@ class BaseElement:
         return self
 
     def _get_locator(self) -> Locator:
-        from framework.ui.driver import Driver
-
         locator: Locator
 
         if hasattr(self, "_locator_kwargs"):

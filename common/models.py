@@ -2,6 +2,7 @@ from pydantic import BaseModel, ConfigDict, EmailStr, field_validator
 
 USERNAME_MIN_LENGTH = 3
 
+
 class User(BaseModel):
     """User model for API and database interactions"""
 

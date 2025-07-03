@@ -5,7 +5,7 @@ exclude = ["venv"]
 
 [lint]
 select = ["E", "F", "I", "B", "UP", "SIM", "C4", "N", "PL"]
-ignore = ["E501", "D100", "D101", "D102", "D103", "D104", "D105", "D106"]  # long lines are handled by black, ignore missing docstrings
+ignore = ["E501", "D100", "D101", "D102", "D103", "D104", "D105", "D106", "PLR0913"]  # long lines are handled by black, ignore missing docstrings and too many arguments
 
 [lint.isort]
 known-first-party = ["api", "ui", "common", "framework", "config"]

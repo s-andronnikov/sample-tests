@@ -35,11 +35,8 @@ class Driver:
             )
             new_context.set_default_timeout(base_settings.timeout)
 
-            if cls.contexts:
-                # Create new context name by incrementing the last one (1-9)
-                new_context_name = f"context_{int(tuple(cls.contexts.keys())[-1][-1]) + 1}"
-            else:
-                new_context_name = "context_1"
+            # Create new context name by incrementing the last one (1-9) or use default
+            new_context_name = f"context_{int(tuple(cls.contexts.keys())[-1][-1]) + 1}" if cls.contexts else "context_1"
 
             page = new_context.new_page()
             cls.contexts[new_context_name] = {
@@ -69,7 +66,7 @@ class Driver:
     @classmethod
     def close_contexts(cls) -> None:
         """Close all browser contexts"""
-        for context_name, context_data in cls.contexts.items():
+        for _context_name, context_data in cls.contexts.items():
             context_data["context"].close()
         cls.contexts = {}
         cls.current_context = None
