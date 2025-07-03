@@ -30,6 +30,6 @@ class LoginPage(BasePage):
 
         page.wait_for_load_state("networkidle")
 
-        assert page.wait_for_selector("div[name='logout']", state="attached", timeout=3000), (
-            "Logout element should be visible after redirection"
-        )
+        assert page.wait_for_selector(
+            "div[name='logout']", state="attached", timeout=3000
+        ), "Logout element should be visible after redirection"
