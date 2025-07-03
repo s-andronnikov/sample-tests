@@ -49,11 +49,7 @@ class BaseElement:
             formatted_locator = ""
 
         driver = (
-            (
-                self.parent._get_locator()
-                if isinstance(self.parent, BaseElement)
-                else self.parent
-            )
+            (self.parent._get_locator() if isinstance(self.parent, BaseElement) else self.parent)
             if (self.parent and not self.ignore_parent)
             else Driver().get_driver()
         )
@@ -118,5 +114,6 @@ class BaseElement:
 
     def get_child_locator(self, locator: str) -> "BaseElement":
         return self.chain(BaseElement(By.LOCATOR, locator))
+
 
 Element = BaseElement

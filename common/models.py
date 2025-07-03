@@ -6,6 +6,7 @@ from pydantic import BaseModel, EmailStr, Field, field_validator, ConfigDict
 
 class User(BaseModel):
     """User model for API and database interactions"""
+
     id: Optional[int] = None
     username: str
     email: EmailStr
@@ -31,6 +32,7 @@ class User(BaseModel):
 
 class Contact(BaseModel):
     """Contact model for API and database interactions"""
+
     id: Optional[int] = None
     first_name: str
     last_name: str
@@ -50,24 +52,28 @@ class Contact(BaseModel):
 
 class LoginRequest(BaseModel):
     """Login request model"""
+
     username: str
     password: str
 
 
 class LoginResponse(BaseModel):
     """Login response model"""
+
     token: str
     user: User
 
 
 class APIError(BaseModel):
     """API error response model"""
+
     detail: str
     status_code: int
 
 
 class PaginatedResponse(BaseModel):
     """Generic paginated response model"""
+
     items: List[Union[User, Contact]]
     total: int
     page: int

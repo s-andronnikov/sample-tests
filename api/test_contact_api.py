@@ -60,11 +60,7 @@ class TestContactAPI:
     def test_update_contact(self, authenticated_api_client, test_contact):
         """Test that authenticated users can update an existing contact"""
         # Arrange
-        update_data = {
-            "email": fake.email(),
-            "phone": fake.phone_number(),
-            "notes": fake.text(max_nb_chars=100)
-        }
+        update_data = {"email": fake.email(), "phone": fake.phone_number(), "notes": fake.text(max_nb_chars=100)}
 
         # Act
         response = authenticated_api_client.update_contact(test_contact["id"], update_data)

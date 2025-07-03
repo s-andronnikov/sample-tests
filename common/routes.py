@@ -1,5 +1,6 @@
 class APIRoutes:
     """API route constants"""
+
     BASE = "/api"
 
     # Auth routes

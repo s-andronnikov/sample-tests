@@ -12,10 +12,7 @@ class BaseConfig(BaseSettings):
     demo_test: bool = Field(False, description="Run tests in demo mode")
     timeout: int = Field(10000, description="Default timeout in milliseconds")
 
-    model_config = {
-        "env_file": ".env",
-        "env_file_encoding": "utf-8"
-    }
+    model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 
 
 base_settings = BaseConfig()

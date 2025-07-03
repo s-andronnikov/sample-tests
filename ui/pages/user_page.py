@@ -15,14 +15,17 @@ fake = Faker()
 
 def url(_url: str = None):
     """Decorator for setting page URL"""
+
     def inner(page_class):
         page_class.url = f"https://{base_settings.host}/{_url or ''}"
         return page_class
+
     return inner
 
 
 class BasePage:
     """Base class for all pages"""
+
     url: str = None
 
     def open(self):
@@ -63,13 +66,15 @@ class UserPage(BasePage):
         self.login_btn.click()
         return self
 
-    def add_user(self, 
-                 username: str = None, 
-                 email: str = None, 
-                 first_name: str = None, 
-                 last_name: str = None, 
-                 password: str = None, 
-                 phone: str = None):
+    def add_user(
+        self,
+        username: str = None,
+        email: str = None,
+        first_name: str = None,
+        last_name: str = None,
+        password: str = None,
+        phone: str = None,
+    ):
         """Add a new user"""
         # Generate random data if not provided
         username = username or fake.user_name()
@@ -87,13 +92,7 @@ class UserPage(BasePage):
 
         # Fill the form and save
         self.user_dialog.fill_form(
-            username=username,
-            email=email,
-            first_name=first_name,
-            last_name=last_name,
-            password=password,
-            phone=phone,
-            is_active=True
+            username=username, email=email, first_name=first_name, last_name=last_name, password=password, phone=phone, is_active=True
         ).save()
 
         return self

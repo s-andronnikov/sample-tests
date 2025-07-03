@@ -11,7 +11,7 @@ from typing import Any, Dict
 def generate_random_string(length: int = 10) -> str:
     """Generate a random string of fixed length"""
     letters = string.ascii_lowercase
-    return ''.join(random.choice(letters) for _ in range(length))
+    return "".join(random.choice(letters) for _ in range(length))
 
 
 def generate_random_email(domain: str = "example.com") -> str:

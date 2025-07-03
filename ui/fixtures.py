@@ -3,9 +3,10 @@ from ui.pages.contact_page import ContactPage
 from ui.pages.login_page import LoginPage
 from ui.pages.user_page import UserPage
 
+
 @pytest.fixture
 def login_page() -> LoginPage:
-   return LoginPage()
+    return LoginPage()
 
 
 @pytest.fixture

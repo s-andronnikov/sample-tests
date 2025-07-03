@@ -4,7 +4,6 @@ from framework.ui.element import Element, By
 from ui.pages.base_page import BasePage
 
 
-
 @ui_url(UIRoutes.LOGIN)
 class LoginPage(BasePage):
     el_login = Element(By.LOCATOR, "input[name='emailAddress']")

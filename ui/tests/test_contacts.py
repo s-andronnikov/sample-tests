@@ -38,7 +38,7 @@ class TestContacts:
             phone=fake.phone_number(),
             address=fake.address(),
             notes=fake.text(max_nb_chars=100),
-            user_id="1"  # Assuming user ID 1 exists
+            user_id="1",  # Assuming user ID 1 exists
         )
 
         # Assert
@@ -52,19 +52,13 @@ class TestContacts:
         last_name = fake.last_name()
         full_name = f"{first_name} {last_name}"
 
-        authenticated_contact_page.add_contact(
-            first_name=first_name,
-            last_name=last_name
-        )
+        authenticated_contact_page.add_contact(first_name=first_name, last_name=last_name)
 
         # New data for editing
         new_email = fake.email()
 
         # Act - Edit the contact
-        authenticated_contact_page.edit_contact(
-            name=full_name,
-            email=new_email
-        )
+        authenticated_contact_page.edit_contact(name=full_name, email=new_email)
 
         # Assert
         authenticated_contact_page.alert.should_have_text(f"Contact {full_name} updated successfully")
@@ -81,10 +75,7 @@ class TestContacts:
         last_name = fake.last_name()
         full_name = f"{first_name} {last_name}"
 
-        authenticated_contact_page.add_contact(
-            first_name=first_name,
-            last_name=last_name
-        )
+        authenticated_contact_page.add_contact(first_name=first_name, last_name=last_name)
 
         # Act - Delete the contact
         authenticated_contact_page.delete_contact(full_name)
@@ -99,10 +90,7 @@ class TestContacts:
         unique_name = f"UniqueTest{fake.random_number(digits=5)}"
         full_name = f"{unique_name} {fake.last_name()}"
 
-        authenticated_contact_page.add_contact(
-            first_name=unique_name,
-            last_name=fake.last_name()
-        )
+        authenticated_contact_page.add_contact(first_name=unique_name, last_name=fake.last_name())
 
         # Act - Search for the contact
         authenticated_contact_page.search_contact(unique_name)

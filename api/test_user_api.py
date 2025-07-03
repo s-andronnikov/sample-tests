@@ -68,10 +68,7 @@ class TestUserAPI:
     def test_update_user(self, authenticated_api_client, test_user):
         """Test that authenticated users can update an existing user"""
         # Arrange
-        update_data = {
-            "email": fake.email(),
-            "phone": fake.phone_number()
-        }
+        update_data = {"email": fake.email(), "phone": fake.phone_number()}
 
         # Act
         response = authenticated_api_client.update_user(test_user["id"], update_data)

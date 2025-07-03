@@ -36,12 +36,7 @@ class TestUsers:
 
         # Act
         authenticated_user_page.add_user(
-            username=username,
-            email=email,
-            first_name=first_name,
-            last_name=last_name,
-            password=fake.password(),
-            phone=fake.phone_number()
+            username=username, email=email, first_name=first_name, last_name=last_name, password=fake.password(), phone=fake.phone_number()
         )
 
         # Assert
@@ -58,10 +53,7 @@ class TestUsers:
         new_email = fake.email()
 
         # Act - Edit the user
-        authenticated_user_page.edit_user(
-            username=username,
-            email=new_email
-        )
+        authenticated_user_page.edit_user(username=username, email=new_email)
 
         # Assert
         authenticated_user_page.alert.should_have_text(f"User {username} updated successfully")
@@ -88,11 +80,7 @@ class TestUsers:
         """Test that a user can search for users"""
         # Arrange - Create a user with a unique name
         unique_name = f"UniqueTest{fake.random_number(digits=5)}"
-        authenticated_user_page.add_user(
-            username=unique_name,
-            first_name=unique_name,
-            last_name=fake.last_name()
-        )
+        authenticated_user_page.add_user(username=unique_name, first_name=unique_name, last_name=fake.last_name())
 
         # Act - Search for the user
         authenticated_user_page.search_user(unique_name)

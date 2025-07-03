@@ -53,10 +53,7 @@ class APIClient:
 
     def login(self, username: str, password: str) -> Response:
         """Login to the API and get an authentication token"""
-        response = self.post(APIRoutes.LOGIN, {
-            "username": username,
-            "password": password
-        })
+        response = self.post(APIRoutes.LOGIN, {"username": username, "password": password})
 
         if response.status_code == 200:
             data = response.json()

@@ -11,7 +11,7 @@ class Driver:
     browser: Optional[Browser] = None
     contexts: Dict[str, Dict[str, Any]] = {}
     current_context: Optional[str] = None
-    auth_state_path: Path = Path('.auth/auth_state.json')
+    auth_state_path: Path = Path(".auth/auth_state.json")
 
     @classmethod
     def init_browser(cls, browser: BrowserType) -> None:
@@ -20,7 +20,7 @@ class Driver:
             channel="chrome",
             headless=base_settings.headless_mode,
             slow_mo=300 if base_settings.demo_test else None,
-            args=("--start-maximized", '--lang=en-US')
+            args=("--start-maximized", "--lang=en-US"),
         )
 
     @classmethod
@@ -38,9 +38,7 @@ class Driver:
 
             if cls.contexts:
                 # Create new context name by incrementing the last one (1-9)
-                new_context_name = (
-                    f"context_{int(tuple(cls.contexts.keys())[-1][-1])+1}"
-                )
+                new_context_name = f"context_{int(tuple(cls.contexts.keys())[-1][-1])+1}"
             else:
                 new_context_name = "context_1"
 
@@ -65,9 +63,7 @@ class Driver:
     def get_driver(cls) -> Page:
         """Get the current page"""
         if cls.current_context is None:
-            raise ValueError(
-                "Driver is not initialized, call Driver.new_workspace first."
-            )
+            raise ValueError("Driver is not initialized, call Driver.new_workspace first.")
         context = cls._get_current_context_payload()
         return context["pages"][context["selected_page"] - 1]
 

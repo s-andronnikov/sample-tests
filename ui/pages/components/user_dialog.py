@@ -26,14 +26,16 @@ class UserDialog:
         self.save_button = BaseElement(By.TEXT, "Save", self.dialog)
         self.cancel_button = BaseElement(By.TEXT, "Cancel", self.dialog)
 
-    def fill_form(self, 
-                  username: Optional[str] = None,
-                  email: Optional[str] = None,
-                  first_name: Optional[str] = None,
-                  last_name: Optional[str] = None,
-                  password: Optional[str] = None,
-                  phone: Optional[str] = None,
-                  is_active: Optional[bool] = None):
+    def fill_form(
+        self,
+        username: Optional[str] = None,
+        email: Optional[str] = None,
+        first_name: Optional[str] = None,
+        last_name: Optional[str] = None,
+        password: Optional[str] = None,
+        phone: Optional[str] = None,
+        is_active: Optional[bool] = None,
+    ):
         """Fill the user form"""
         if username is not None:
             self.username_input.fill(username)

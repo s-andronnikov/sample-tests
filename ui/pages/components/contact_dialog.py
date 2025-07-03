@@ -26,14 +26,16 @@ class ContactDialog:
         self.save_button = BaseElement(By.TEXT, "Save", self.dialog)
         self.cancel_button = BaseElement(By.TEXT, "Cancel", self.dialog)
 
-    def fill_form(self,
-                  first_name: Optional[str] = None,
-                  last_name: Optional[str] = None,
-                  email: Optional[str] = None,
-                  phone: Optional[str] = None,
-                  address: Optional[str] = None,
-                  notes: Optional[str] = None,
-                  user_id: Optional[str] = None):
+    def fill_form(
+        self,
+        first_name: Optional[str] = None,
+        last_name: Optional[str] = None,
+        email: Optional[str] = None,
+        phone: Optional[str] = None,
+        address: Optional[str] = None,
+        notes: Optional[str] = None,
+        user_id: Optional[str] = None,
+    ):
         """Fill the contact form"""
         if first_name is not None:
             self.first_name_input.fill(first_name)

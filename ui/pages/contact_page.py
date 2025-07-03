@@ -14,14 +14,17 @@ fake = Faker()
 
 def url(_url: str = None):
     """Decorator for setting page URL"""
+
     def inner(page_class):
         page_class.url = f"https://{base_settings.host}/{_url or ''}"
         return page_class
+
     return inner
 
 
 class BasePage:
     """Base class for all pages"""
+
     url: str = None
 
     def open(self):
@@ -50,14 +53,16 @@ class ContactPage(BasePage):
         # Contact dialog component
         self.contact_dialog = ContactDialog()
 
-    def add_contact(self, 
-                    first_name: str = None, 
-                    last_name: str = None, 
-                    email: str = None, 
-                    phone: str = None, 
-                    address: str = None, 
-                    notes: str = None, 
-                    user_id: str = None):
+    def add_contact(
+        self,
+        first_name: str = None,
+        last_name: str = None,
+        email: str = None,
+        phone: str = None,
+        address: str = None,
+        notes: str = None,
+        user_id: str = None,
+    ):
         """Add a new contact"""
         # Generate random data if not provided
         first_name = first_name or fake.first_name()
@@ -75,13 +80,7 @@ class ContactPage(BasePage):
 
         # Fill the form and save
         self.contact_dialog.fill_form(
-            first_name=first_name,
-            last_name=last_name,
-            email=email,
-            phone=phone,
-            address=address,
-            notes=notes,
-            user_id=user_id
+            first_name=first_name, last_name=last_name, email=email, phone=phone, address=address, notes=notes, user_id=user_id
         ).save()
 
         return self

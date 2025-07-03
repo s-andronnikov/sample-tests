@@ -5,6 +5,7 @@ from ui.pages.login_page import LoginPage
 
 fake = Faker()
 
+
 @pytest.mark.ui
 class TestLogin:
     def test_failed_login(self, login_page: LoginPage):
@@ -19,5 +20,5 @@ class TestLogin:
     #     login_page.open()
     #     login_page.login("user", "password")
 
-        # login_page.title.should_be_visible()
-        # login_page.should_see_user("admin")
+    # login_page.title.should_be_visible()
+    # login_page.should_see_user("admin")

@@ -5,7 +5,7 @@ from playwright.sync_api import Locator
 from framework.ui.element import BaseElement, By
 
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 class ListElement(BaseElement, Generic[T]):
@@ -54,17 +54,12 @@ class Grid(BaseElement):
         parent: Optional[Union[BaseElement, Locator]] = None,
     ):
         super().__init__(search_by, locator, parent)
-        self.rows = ListElement(
-            By.LOCATOR,
-            "tbody > tr",
-            lambda loc, idx: GridRow(loc, idx, self),
-            self
-        )
+        self.rows = ListElement(By.LOCATOR, "tbody > tr", lambda loc, idx: GridRow(loc, idx, self), self)
 
-    def get_row(self, index: int) -> 'GridRow':
+    def get_row(self, index: int) -> "GridRow":
         return self.rows[index]
 
-    def find_row_by_text(self, text: str) -> Optional['GridRow']:
+    def find_row_by_text(self, text: str) -> Optional["GridRow"]:
         return self.rows.find(lambda row: text in row.get_text())
 
 
@@ -75,14 +70,9 @@ class GridRow:
         self.locator = locator
         self.index = index
         self.grid = grid
-        self.cells = ListElement(
-            By.LOCATOR,
-            "td",
-            lambda loc, idx: GridCell(loc, idx, self),
-            locator
-        )
+        self.cells = ListElement(By.LOCATOR, "td", lambda loc, idx: GridCell(loc, idx, self), locator)
 
-    def get_cell(self, index: int) -> 'GridCell':
+    def get_cell(self, index: int) -> "GridCell":
         return self.cells[index]
 
     def get_text(self) -> str:

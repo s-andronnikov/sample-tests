@@ -28,6 +28,7 @@ def base_url() -> str:
 @pytest.fixture
 def navigate_to(base_url) -> Generator[callable, None, None]:
     """Fixture that returns a function to navigate to a specific path"""
+
     def _navigate_to(path: str = "") -> None:
         url = f"{base_url}/{path.lstrip('/')}"
         Driver.goto(url)

@@ -92,7 +92,7 @@ class DBClient:
 
     def execute_script(self, script_path: str) -> None:
         """Execute a SQL script file"""
-        with open(script_path, 'r') as file:
+        with open(script_path, "r") as file:
             script = file.read()
             self.connect()
             self.cursor.execute(script)
