@@ -24,3 +24,11 @@ class LoginPage(BasePage):
         message_span = self.error_toast.get_child_locator('span:has-text("' + expected_message + '")')
 
         assert message_span.should_be_visible(), f"Error toast with message '{expected_message}' not found"
+
+
+    def should_be_redirected_from_login(self):
+        page = self.get_page()
+        
+        # Wait for any page load to complete
+        page.wait_for_load_state("networkidle")
+        page.wait_for_selector("div[name='logout']", state="attached", timeout=3000)

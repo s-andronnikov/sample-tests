@@ -16,9 +16,8 @@ class TestLogin:
 
         login_page.should_see_error_toast("Invalid username/email and/or password.")
 
-    # def test_success_login(self, login_page: LoginPage):
-    #     login_page.open()
-    #     login_page.login("user", "password")
+    def test_success_login(self, login_page: LoginPage):
+        login_page.open()
+        login_page.login("admin", "password")
 
-    # login_page.title.should_be_visible()
-    # login_page.should_see_user("admin")
+        login_page.should_be_redirected_from_login()
