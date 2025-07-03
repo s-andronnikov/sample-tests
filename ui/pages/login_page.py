@@ -12,24 +12,24 @@ class LoginPage(BasePage):
 
     error_toast = Element(By.LOCATOR, ".Toastify__toast--error")
 
-    def login(self, login: str, password: str):
-        self.el_login.fill(login)
-        self.el_password.fill(password)
-        self.el_login_btn.click()
+    async def login(self, login: str, password: str):
+        await self.el_login.fill(login)
+        await self.el_password.fill(password)
+        await self.el_login_btn.click()
 
         return self
 
-    def should_see_error_toast(self, expected_message):
-        self.error_toast.should_be_visible()
+    async def should_see_error_toast(self, expected_message):
+        await self.error_toast.should_be_visible()
         message_span = self.error_toast.get_child_locator('span:has-text("' + expected_message + '")')
 
-        assert message_span.should_be_visible(), f"Error toast with message '{expected_message}' not found"
+        assert await message_span.should_be_visible(), f"Error toast with message '{expected_message}' not found"
 
-    def should_be_redirected_from_login(self):
+    async def should_be_redirected_from_login(self):
         page = self.get_page()
 
-        page.wait_for_load_state("networkidle")
+        await page.wait_for_load_state("networkidle")
 
-        assert page.wait_for_selector(
+        assert await page.wait_for_selector(
             "div[name='logout']", state="attached", timeout=3000
         ), "Logout element should be visible after redirection"

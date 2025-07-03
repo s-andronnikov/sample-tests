@@ -11,17 +11,17 @@ class TestUsers:
     """UI tests for the users section"""
 
     @pytest.mark.smoke
-    def test_login(self, user_page):
+    async def test_login(self, user_page):
         """Test that a user can log in successfully"""
         # Arrange
-        user_page.open()
+        await user_page.open()
 
         # Act
-        user_page.login("admin", "adminpassword")
+        await user_page.login("admin", "adminpassword")
 
         # Assert
-        user_page.title.should_be_visible()
-        user_page.should_see_user("admin")
+        await user_page.title.should_be_visible()
+        await user_page.should_see_user("admin")
 
     def test_add_user(self, authenticated_user_page):
         """Test that a user can add a new user"""

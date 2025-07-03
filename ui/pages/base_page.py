@@ -1,4 +1,4 @@
-from playwright.sync_api import Page
+from playwright.async_api import Page
 
 from framework.ui.driver import Driver
 
@@ -8,9 +8,9 @@ class BasePage:
 
     url: str = None
 
-    def open(self):
+    async def open(self):
         """Open the page"""
-        Driver.goto(self.url)
+        await Driver.goto(self.url)
         return self
 
     @staticmethod

@@ -25,9 +25,9 @@ class BasePage:
 
     url: str = None
 
-    def open(self):
+    async def open(self):
         """Open the page"""
-        Driver.goto(self.url)
+        await Driver.goto(self.url)
         return self
 
 
@@ -56,11 +56,11 @@ class UserPage(BasePage):
         self.password_input = BaseElement(By.LOCATOR, "input[name='password']")
         self.login_btn = BaseElement(By.TEXT, "Login")
 
-    def login(self, username: str, password: str):
+    async def login(self, username: str, password: str):
         """Login with the provided credentials"""
-        self.login_input.fill(username)
-        self.password_input.fill(password)
-        self.login_btn.click()
+        await self.login_input.fill(username)
+        await self.password_input.fill(password)
+        await self.login_btn.click()
         return self
 
     def add_user(
@@ -138,7 +138,7 @@ class UserPage(BasePage):
 
         return self
 
-    def should_see_user(self, username: str):
+    async def should_see_user(self, username: str):
         """Assert that a user is visible in the grid"""
         user_row = self.get_user_row(username)
         assert user_row is not None, f"User '{username}' not found in the grid"
