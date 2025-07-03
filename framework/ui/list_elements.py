@@ -1,9 +1,9 @@
-from typing import Any, Callable, Dict, List, Optional, Union, TypeVar, Generic, cast
+from collections.abc import Callable
+from typing import Generic, Optional, TypeVar
 
 from playwright.sync_api import Locator
 
 from framework.ui.element import BaseElement, By
-
 
 T = TypeVar("T")
 
@@ -16,7 +16,7 @@ class ListElement(BaseElement, Generic[T]):
         search_by: str,
         locator: str,
         item_factory: Callable[[Locator, int], T],
-        parent: Optional[Union[BaseElement, Locator]] = None,
+        parent: BaseElement | Locator | None = None,
         ignore_parent: bool = False,
     ):
         super().__init__(search_by, locator, parent, ignore_parent)
@@ -34,10 +34,10 @@ class ListElement(BaseElement, Generic[T]):
     def count(self) -> int:
         return self._get_locator().count()
 
-    def filter(self, predicate: Callable[[T], bool]) -> List[T]:
+    def filter(self, predicate: Callable[[T], bool]) -> list[T]:
         return [item for item in self if predicate(item)]
 
-    def find(self, predicate: Callable[[T], bool]) -> Optional[T]:
+    def find(self, predicate: Callable[[T], bool]) -> T | None:
         for item in self:
             if predicate(item):
                 return item
@@ -51,7 +51,7 @@ class Grid(BaseElement):
         self,
         search_by: str = By.LOCATOR,
         locator: str = "table",
-        parent: Optional[Union[BaseElement, Locator]] = None,
+        parent: BaseElement | Locator | None = None,
     ):
         super().__init__(search_by, locator, parent)
         self.rows = ListElement(By.LOCATOR, "tbody > tr", lambda loc, idx: GridRow(loc, idx, self), self)

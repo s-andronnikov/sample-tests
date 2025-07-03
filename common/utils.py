@@ -5,7 +5,7 @@ import string
 import time
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 
 def generate_random_string(length: int = 10) -> str:
@@ -35,17 +35,17 @@ def load_resource(resource_path: str) -> str:
     base_dir = Path(os.path.dirname(os.path.abspath(__file__))).parent
     file_path = base_dir / "resources" / resource_path
 
-    with open(file_path, "r", encoding="utf-8") as file:
+    with open(file_path, encoding="utf-8") as file:
         return file.read()
 
 
-def load_json_resource(resource_path: str) -> Dict[str, Any]:
+def load_json_resource(resource_path: str) -> dict[str, Any]:
     """Load a JSON resource file"""
     content = load_resource(resource_path)
     return json.loads(content)
 
 
-def save_json_resource(data: Dict[str, Any], resource_path: str) -> None:
+def save_json_resource(data: dict[str, Any], resource_path: str) -> None:
     """Save data to a JSON resource file"""
     base_dir = Path(os.path.dirname(os.path.abspath(__file__))).parent
     file_path = base_dir / "resources" / resource_path

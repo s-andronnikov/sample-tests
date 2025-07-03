@@ -1,5 +1,4 @@
-import os
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any
 
 import psycopg2
 from psycopg2.extras import RealDictCursor
@@ -30,30 +29,30 @@ class DBClient:
         self.cursor = None
         self.connection = None
 
-    def execute(self, query: str, params: Tuple = None) -> None:
+    def execute(self, query: str, params: tuple = None) -> None:
         """Execute a SQL query"""
         self.connect()
         self.cursor.execute(query, params or ())
 
-    def execute_and_commit(self, query: str, params: Tuple = None) -> None:
+    def execute_and_commit(self, query: str, params: tuple = None) -> None:
         """Execute a SQL query and commit the transaction"""
         self.connect()
         self.cursor.execute(query, params or ())
         self.connection.commit()
 
-    def fetch_one(self, query: str, params: Tuple = None) -> Optional[Dict[str, Any]]:
+    def fetch_one(self, query: str, params: tuple = None) -> dict[str, Any] | None:
         """Execute a query and fetch one result"""
         self.connect()
         self.cursor.execute(query, params or ())
         return self.cursor.fetchone()
 
-    def fetch_all(self, query: str, params: Tuple = None) -> List[Dict[str, Any]]:
+    def fetch_all(self, query: str, params: tuple = None) -> list[dict[str, Any]]:
         """Execute a query and fetch all results"""
         self.connect()
         self.cursor.execute(query, params or ())
         return self.cursor.fetchall()
 
-    def insert(self, table: str, data: Dict[str, Any]) -> int:
+    def insert(self, table: str, data: dict[str, Any]) -> int:
         """Insert data into a table and return the ID"""
         columns = ", ".join(data.keys())
         placeholders = ", ".join("%s" for _ in data)
@@ -66,9 +65,9 @@ class DBClient:
 
         return result["id"]
 
-    def update(self, table: str, data: Dict[str, Any], condition: str, params: Tuple = None) -> None:
+    def update(self, table: str, data: dict[str, Any], condition: str, params: tuple = None) -> None:
         """Update data in a table"""
-        set_clause = ", ".join(f"{key} = %s" for key in data.keys())
+        set_clause = ", ".join(f"{key} = %s" for key in data)
         values = tuple(data.values())
 
         if params:
@@ -77,22 +76,22 @@ class DBClient:
         query = f"UPDATE {table} SET {set_clause} WHERE {condition}"
         self.execute_and_commit(query, values)
 
-    def delete(self, table: str, condition: str, params: Tuple = None) -> None:
+    def delete(self, table: str, condition: str, params: tuple = None) -> None:
         """Delete data from a table"""
         query = f"DELETE FROM {table} WHERE {condition}"
         self.execute_and_commit(query, params)
 
-    def get_by_id(self, table: str, id: int) -> Optional[Dict[str, Any]]:
+    def get_by_id(self, table: str, id: int) -> dict[str, Any] | None:
         """Get a record by ID"""
         return self.fetch_one(f"SELECT * FROM {table} WHERE id = %s", (id,))
 
-    def get_all(self, table: str) -> List[Dict[str, Any]]:
+    def get_all(self, table: str) -> list[dict[str, Any]]:
         """Get all records from a table"""
         return self.fetch_all(f"SELECT * FROM {table}")
 
     def execute_script(self, script_path: str) -> None:
         """Execute a SQL script file"""
-        with open(script_path, "r") as file:
+        with open(script_path) as file:
             script = file.read()
             self.connect()
             self.cursor.execute(script)

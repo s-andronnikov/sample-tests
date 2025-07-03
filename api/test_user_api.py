@@ -2,7 +2,7 @@ import pytest
 from faker import Faker
 
 from common.data_factory import DataFactory
-from common.models import User
+from common.http_status import CREATED, NO_CONTENT, NOT_FOUND, OK, UNAUTHORIZED
 
 # Initialize Faker
 fake = Faker()
@@ -20,7 +20,7 @@ class TestUserAPI:
         response = api_client.login("admin", "adminpassword")
 
         # Assert
-        assert response.status_code == 200
+        assert response.status_code == OK
         data = response.json()
         assert "token" in data
         assert data["user"]["username"] == "admin"
@@ -31,7 +31,7 @@ class TestUserAPI:
         response = authenticated_api_client.get_users()
 
         # Assert
-        assert response.status_code == 200
+        assert response.status_code == OK
         data = response.json()
         assert "items" in data
         assert data["total"] > 0
@@ -42,7 +42,7 @@ class TestUserAPI:
         response = authenticated_api_client.get_user(test_user["id"])
 
         # Assert
-        assert response.status_code == 200
+        assert response.status_code == OK
         user = response.json()
         assert user["id"] == test_user["id"]
         assert user["username"] == test_user["username"]
@@ -57,7 +57,7 @@ class TestUserAPI:
         response = authenticated_api_client.create_user(user_data)
 
         # Assert
-        assert response.status_code == 201
+        assert response.status_code == CREATED
         created_user = response.json()
         assert created_user["username"] == user.username
         assert created_user["email"] == user.email
@@ -74,7 +74,7 @@ class TestUserAPI:
         response = authenticated_api_client.update_user(test_user["id"], update_data)
 
         # Assert
-        assert response.status_code == 200
+        assert response.status_code == OK
         updated_user = response.json()
         assert updated_user["email"] == update_data["email"]
         assert updated_user["phone"] == update_data["phone"]
@@ -84,24 +84,24 @@ class TestUserAPI:
         # Arrange - Create a user to delete
         user = DataFactory.create_user()
         create_response = authenticated_api_client.create_user(user.dict(exclude={"id"}))
-        assert create_response.status_code == 201
+        assert create_response.status_code == CREATED
         created_user = create_response.json()
 
         # Act
         delete_response = authenticated_api_client.delete_user(created_user["id"])
 
         # Assert
-        assert delete_response.status_code == 204
+        assert delete_response.status_code == NO_CONTENT
 
         # Verify the user is deleted
         get_response = authenticated_api_client.get_user(created_user["id"])
-        assert get_response.status_code == 404
+        assert get_response.status_code == NOT_FOUND
 
     def test_unauthorized_access(self, api_client):
         """Test that unauthenticated requests are rejected"""
         # Act & Assert - Try to access protected endpoints
         response = api_client.get_users()
-        assert response.status_code == 401
+        assert response.status_code == UNAUTHORIZED
 
         response = api_client.create_user({"username": "test"})
-        assert response.status_code == 401
+        assert response.status_code == UNAUTHORIZED

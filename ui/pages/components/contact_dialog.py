@@ -1,12 +1,10 @@
-from typing import Optional
-
 from framework.ui.element import BaseElement, By
 
 
 class ContactDialog:
     """Contact dialog component for adding/editing contacts"""
 
-    def __init__(self, parent: Optional[BaseElement] = None):
+    def __init__(self, parent: BaseElement | None = None):
         self.parent = parent
 
         # Dialog elements
@@ -28,13 +26,13 @@ class ContactDialog:
 
     def fill_form(
         self,
-        first_name: Optional[str] = None,
-        last_name: Optional[str] = None,
-        email: Optional[str] = None,
-        phone: Optional[str] = None,
-        address: Optional[str] = None,
-        notes: Optional[str] = None,
-        user_id: Optional[str] = None,
+        first_name: str | None = None,
+        last_name: str | None = None,
+        email: str | None = None,
+        phone: str | None = None,
+        address: str | None = None,
+        notes: str | None = None,
+        user_id: str | None = None,
     ):
         """Fill the contact form"""
         if first_name is not None:

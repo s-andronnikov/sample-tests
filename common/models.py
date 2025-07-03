@@ -1,27 +1,25 @@
-from datetime import datetime
-from typing import List, Optional, Union
+from pydantic import BaseModel, ConfigDict, EmailStr, field_validator
 
-from pydantic import BaseModel, EmailStr, Field, field_validator, ConfigDict
-
+USERNAME_MIN_LENGTH = 3
 
 class User(BaseModel):
     """User model for API and database interactions"""
 
-    id: Optional[int] = None
+    id: int | None = None
     username: str
     email: EmailStr
     first_name: str
     last_name: str
-    password: Optional[str] = None
-    phone: Optional[str] = None
+    password: str | None = None
+    phone: str | None = None
     is_active: bool = True
-    created_at: Optional[str] = None
+    created_at: str | None = None
 
     model_config = ConfigDict(from_attributes=True)
 
     @field_validator("username")
-    def username_must_be_valid(cls, v):
-        if len(v) < 3:
+    def username_must_be_valid(self, v):
+        if len(v) < USERNAME_MIN_LENGTH:
             raise ValueError("Username must be at least 3 characters")
         return v
 
@@ -33,14 +31,14 @@ class User(BaseModel):
 class Contact(BaseModel):
     """Contact model for API and database interactions"""
 
-    id: Optional[int] = None
+    id: int | None = None
     first_name: str
     last_name: str
     email: EmailStr
     phone: str
-    address: Optional[str] = None
-    notes: Optional[str] = None
-    created_at: Optional[str] = None
+    address: str | None = None
+    notes: str | None = None
+    created_at: str | None = None
     user_id: int
 
     model_config = ConfigDict(from_attributes=True)
@@ -74,7 +72,7 @@ class APIError(BaseModel):
 class PaginatedResponse(BaseModel):
     """Generic paginated response model"""
 
-    items: List[Union[User, Contact]]
+    items: list[User | Contact]
     total: int
     page: int
     size: int

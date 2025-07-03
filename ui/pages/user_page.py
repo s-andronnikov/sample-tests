@@ -1,12 +1,9 @@
-from typing import Optional
-
 from faker import Faker
 
 from config import base_settings
 from framework.ui.driver import Driver
 from framework.ui.element import BaseElement, By
 from framework.ui.list_elements import Grid
-
 from ui.pages.components.user_dialog import UserDialog
 
 # Initialize Faker

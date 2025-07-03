@@ -1,6 +1,6 @@
 from common.decorators import ui_url
 from common.routes import UIRoutes
-from framework.ui.element import Element, By
+from framework.ui.element import By, Element
 from ui.pages.base_page import BasePage
 
 

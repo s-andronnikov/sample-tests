@@ -1,9 +1,6 @@
 import pytest
 from faker import Faker
 
-from common.data_factory import DataFactory
-from ui.fixtures import authenticated_user_page  # Import the fixture directly
-
 # Initialize Faker
 fake = Faker()
 

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Callable, Dict, List, Optional, Union, TypeVar, cast
+from typing import Union
 
 from playwright.sync_api import Locator, expect
 
@@ -20,7 +20,7 @@ class BaseElement:
         self,
         search_by: str,
         locator: str,
-        parent: Optional[Union["BaseElement", Locator]] = None,
+        parent: Union["BaseElement", Locator] | None = None,
         ignore_parent: bool = False,
         exact_text: bool = True,
     ):

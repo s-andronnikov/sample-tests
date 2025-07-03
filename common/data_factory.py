@@ -1,4 +1,5 @@
-from typing import Any, Dict, List, Optional
+from typing import Any
+
 from faker import Faker
 
 from common.models import Contact, User
@@ -11,7 +12,7 @@ class DataFactory:
     """Factory for generating test data"""
 
     @staticmethod
-    def create_user(overrides: Dict[str, Any] = None) -> User:
+    def create_user(overrides: dict[str, Any] = None) -> User:
         """Create a user with random data"""
         user_data = {
             "id": fake.random_int(min=1, max=100000),
@@ -31,7 +32,7 @@ class DataFactory:
         return User(**user_data)
 
     @staticmethod
-    def create_contact(overrides: Dict[str, Any] = None) -> Contact:
+    def create_contact(overrides: dict[str, Any] = None) -> Contact:
         """Create a contact with random data"""
         contact_data = {
             "id": fake.random_int(min=1, max=100000),
@@ -51,16 +52,16 @@ class DataFactory:
         return Contact(**contact_data)
 
     @staticmethod
-    def create_multiple_users(count: int, overrides: Dict[str, Any] = None) -> List[User]:
+    def create_multiple_users(count: int, overrides: dict[str, Any] = None) -> list[User]:
         """Create multiple users with random data"""
         return [DataFactory.create_user(overrides) for _ in range(count)]
 
     @staticmethod
-    def create_multiple_contacts(count: int, overrides: Dict[str, Any] = None) -> List[Contact]:
+    def create_multiple_contacts(count: int, overrides: dict[str, Any] = None) -> list[Contact]:
         """Create multiple contacts with random data"""
         return [DataFactory.create_contact(overrides) for _ in range(count)]
 
     @staticmethod
-    def create_related_contacts(user_id: int, count: int) -> List[Contact]:
+    def create_related_contacts(user_id: int, count: int) -> list[Contact]:
         """Create multiple contacts related to a specific user"""
         return DataFactory.create_multiple_contacts(count, {"user_id": user_id})

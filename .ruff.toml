@@ -5,13 +5,10 @@ exclude = ["venv"]
 
 [lint]
 select = ["E", "F", "I", "B", "UP", "SIM", "C4", "N", "PL"]
-ignore = ["E501"]  # long lines are handled by black
+ignore = ["E501", "D100", "D101", "D102", "D103", "D104", "D105", "D106"]  # long lines are handled by black, ignore missing docstrings
 
 [lint.isort]
 known-first-party = ["api", "ui", "common", "framework", "config"]
-
-[lint.flake8-pytest-style]
-disable-attrs = ["D100", "D101", "D102", "D103", "D104", "D105", "D106"]
 
 [format]
 quote-style = "double"

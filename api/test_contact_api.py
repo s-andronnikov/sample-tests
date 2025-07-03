@@ -2,7 +2,7 @@ import pytest
 from faker import Faker
 
 from common.data_factory import DataFactory
-from common.models import Contact
+from common.http_status import CREATED, NO_CONTENT, NOT_FOUND, OK, UNAUTHORIZED
 
 # Initialize Faker
 fake = Faker()
@@ -20,7 +20,7 @@ class TestContactAPI:
         response = authenticated_api_client.get_contacts()
 
         # Assert
-        assert response.status_code == 200
+        assert response.status_code == OK
         data = response.json()
         assert "items" in data
         assert isinstance(data["items"], list)
@@ -31,7 +31,7 @@ class TestContactAPI:
         response = authenticated_api_client.get_contact(test_contact["id"])
 
         # Assert
-        assert response.status_code == 200
+        assert response.status_code == OK
         contact = response.json()
         assert contact["id"] == test_contact["id"]
         assert contact["first_name"] == test_contact["first_name"]
@@ -47,7 +47,7 @@ class TestContactAPI:
         response = authenticated_api_client.create_contact(contact_data)
 
         # Assert
-        assert response.status_code == 201
+        assert response.status_code == CREATED
         created_contact = response.json()
         assert created_contact["first_name"] == contact.first_name
         assert created_contact["last_name"] == contact.last_name
@@ -66,7 +66,7 @@ class TestContactAPI:
         response = authenticated_api_client.update_contact(test_contact["id"], update_data)
 
         # Assert
-        assert response.status_code == 200
+        assert response.status_code == OK
         updated_contact = response.json()
         assert updated_contact["email"] == update_data["email"]
         assert updated_contact["phone"] == update_data["phone"]
@@ -77,18 +77,18 @@ class TestContactAPI:
         # Arrange - Create a contact to delete
         contact = DataFactory.create_contact({"user_id": test_user["id"]})
         create_response = authenticated_api_client.create_contact(contact.dict(exclude={"id"}))
-        assert create_response.status_code == 201
+        assert create_response.status_code == CREATED
         created_contact = create_response.json()
 
         # Act
         delete_response = authenticated_api_client.delete_contact(created_contact["id"])
 
         # Assert
-        assert delete_response.status_code == 204
+        assert delete_response.status_code == NO_CONTENT
 
         # Verify the contact is deleted
         get_response = authenticated_api_client.get_contact(created_contact["id"])
-        assert get_response.status_code == 404
+        assert get_response.status_code == NOT_FOUND
 
     def test_filter_contacts_by_user(self, authenticated_api_client, test_user):
         """Test that contacts can be filtered by user ID"""
@@ -98,14 +98,14 @@ class TestContactAPI:
 
         for contact in contacts:
             response = authenticated_api_client.create_contact(contact.dict(exclude={"id"}))
-            assert response.status_code == 201
+            assert response.status_code == CREATED
             created_contacts.append(response.json())
 
         # Act - Get contacts filtered by user ID
         response = authenticated_api_client.get(f"contacts?user_id={test_user['id']}")
 
         # Assert
-        assert response.status_code == 200
+        assert response.status_code == OK
         data = response.json()
         assert len(data["items"]) >= len(created_contacts)
 
@@ -121,7 +121,7 @@ class TestContactAPI:
         """Test that unauthenticated requests are rejected"""
         # Act & Assert - Try to access protected endpoints
         response = api_client.get_contacts()
-        assert response.status_code == 401
+        assert response.status_code == UNAUTHORIZED
 
         response = api_client.create_contact({"first_name": "Test"})
-        assert response.status_code == 401
+        assert response.status_code == UNAUTHORIZED

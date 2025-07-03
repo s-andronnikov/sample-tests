@@ -1,11 +1,11 @@
-import json
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 import requests
 from requests import Response
 
-from config import base_settings
+from common.http_status import OK
 from common.routes import APIRoutes
+from config import base_settings
 
 
 class APIClient:
@@ -29,17 +29,17 @@ class APIClient:
         """Create a full URL from the endpoint"""
         return f"{self.base_url}/{endpoint.lstrip('/')}"
 
-    def get(self, endpoint: str, params: Dict[str, Any] = None) -> Response:
+    def get(self, endpoint: str, params: dict[str, Any] = None) -> Response:
         """Make a GET request to the API"""
         url = self._make_url(endpoint)
         return requests.get(url, headers=self.headers, params=params)
 
-    def post(self, endpoint: str, data: Dict[str, Any] = None) -> Response:
+    def post(self, endpoint: str, data: dict[str, Any] = None) -> Response:
         """Make a POST request to the API"""
         url = self._make_url(endpoint)
         return requests.post(url, headers=self.headers, json=data)
 
-    def put(self, endpoint: str, data: Dict[str, Any] = None) -> Response:
+    def put(self, endpoint: str, data: dict[str, Any] = None) -> Response:
         """Make a PUT request to the API"""
         url = self._make_url(endpoint)
         return requests.put(url, headers=self.headers, json=data)
@@ -55,7 +55,7 @@ class APIClient:
         """Login to the API and get an authentication token"""
         response = self.post(APIRoutes.LOGIN, {"username": username, "password": password})
 
-        if response.status_code == 200:
+        if response.status_code == OK:
             data = response.json()
             if "token" in data:
                 self.set_auth_token(data["token"])
@@ -70,11 +70,11 @@ class APIClient:
         """Get a specific user"""
         return self.get(f"{APIRoutes.USERS}/{user_id}")
 
-    def create_user(self, user_data: Dict[str, Any]) -> Response:
+    def create_user(self, user_data: dict[str, Any]) -> Response:
         """Create a new user"""
         return self.post(APIRoutes.USERS, user_data)
 
-    def update_user(self, user_id: int, user_data: Dict[str, Any]) -> Response:
+    def update_user(self, user_id: int, user_data: dict[str, Any]) -> Response:
         """Update an existing user"""
         return self.put(f"{APIRoutes.USERS}/{user_id}", user_data)
 
@@ -90,11 +90,11 @@ class APIClient:
         """Get a specific contact"""
         return self.get(f"{APIRoutes.CONTACTS}/{contact_id}")
 
-    def create_contact(self, contact_data: Dict[str, Any]) -> Response:
+    def create_contact(self, contact_data: dict[str, Any]) -> Response:
         """Create a new contact"""
         return self.post(APIRoutes.CONTACTS, contact_data)
 
-    def update_contact(self, contact_id: int, contact_data: Dict[str, Any]) -> Response:
+    def update_contact(self, contact_id: int, contact_data: dict[str, Any]) -> Response:
         """Update an existing contact"""
         return self.put(f"{APIRoutes.CONTACTS}/{contact_id}", contact_data)
 

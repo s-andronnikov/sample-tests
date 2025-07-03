@@ -1,16 +1,15 @@
-from playwright.sync_api import Browser, BrowserType, Page, ViewportSize
-from typing import Dict, List, Optional, Union, Any
 from pathlib import Path
+from typing import Any
 
-from playwright.sync_api import Browser, BrowserType, Page, BrowserContext
+from playwright.sync_api import Browser, BrowserContext, BrowserType, Page, ViewportSize
 
 from config import base_settings
 
 
 class Driver:
-    browser: Optional[Browser] = None
-    contexts: Dict[str, Dict[str, Any]] = {}
-    current_context: Optional[str] = None
+    browser: Browser | None = None
+    contexts: dict[str, dict[str, Any]] = {}
+    current_context: str | None = None
     auth_state_path: Path = Path(".auth/auth_state.json")
 
     @classmethod
@@ -38,7 +37,7 @@ class Driver:
 
             if cls.contexts:
                 # Create new context name by incrementing the last one (1-9)
-                new_context_name = f"context_{int(tuple(cls.contexts.keys())[-1][-1])+1}"
+                new_context_name = f"context_{int(tuple(cls.contexts.keys())[-1][-1]) + 1}"
             else:
                 new_context_name = "context_1"
 
@@ -53,7 +52,7 @@ class Driver:
             raise Exception("Browser not initialized. Call init_browser first.")
 
     @classmethod
-    def _get_current_context_payload(cls) -> Dict[str, Any]:
+    def _get_current_context_payload(cls) -> dict[str, Any]:
         """Get the current context data"""
         if cls.current_context is None:
             raise ValueError("No context selected")

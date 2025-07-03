@@ -1,8 +1,6 @@
 import pytest
 from faker import Faker
 
-from common.data_factory import DataFactory
-
 # Initialize Faker
 fake = Faker()
 
