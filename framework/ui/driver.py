@@ -1,4 +1,4 @@
-from playwright.sync_api import Browser, BrowserType, Page
+from playwright.sync_api import Browser, BrowserType, Page, ViewportSize
 from typing import Dict, List, Optional, Union, Any
 from pathlib import Path
 
@@ -20,7 +20,7 @@ class Driver:
             channel="chrome",
             headless=base_settings.headless_mode,
             slow_mo=300 if base_settings.demo_test else None,
-            args=("--start-maximized", '--lang=ru-RU')
+            args=("--start-maximized", '--lang=en-US')
         )
 
     @classmethod
@@ -29,9 +29,9 @@ class Driver:
         if cls.browser:
             new_context = cls.browser.new_context(
                 ignore_https_errors=True,
-                locale="ru-RU",
-                viewport={"width": 1920, "height": 1200},
-                timezone_id="Europe/Moscow",
+                locale="en-US",
+                viewport=ViewportSize(width=1920, height=1080),
+                timezone_id="America/New_York",
                 storage_state=cls.auth_state_path if cls.auth_state_path.exists() else None,
             )
             new_context.set_default_timeout(base_settings.timeout)

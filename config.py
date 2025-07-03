@@ -3,6 +3,8 @@ from pydantic import Field
 
 
 class BaseConfig(BaseSettings):
+    protocol: str = Field("http", description="Protocol used for requests")
+    domain: str = Field("localhost", description="Domain name")
     host: str = Field("localhost:8000", description="Host address")
     api_base_url: str = Field("http://localhost:8000/api", description="Base URL for API requests")
     db_url: str = Field("postgresql://user:password@localhost:5432/testdb", description="Database connection string")

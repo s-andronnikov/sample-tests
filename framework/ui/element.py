@@ -58,7 +58,7 @@ class BaseElement:
             else Driver().get_driver()
         )
         resolve_method = getattr(driver, self.search_by)
-        locator = resolve_method(formatted_locator, exact=self.exact_text)
+        locator = resolve_method(formatted_locator)
         return locator
 
     def chain(self, element: "BaseElement"):
@@ -69,9 +69,9 @@ class BaseElement:
         self._get_locator().hover(**kwargs)
         return self
 
-    def should_be_visible(self, should_visible: bool = True) -> "BaseElement":
+    def should_be_visible(self, should_visible: bool = True, timeout: int = 5000) -> "BaseElement":
         locator = self._get_locator()
-        expect(locator).to_be_visible(visible=should_visible)
+        expect(locator).to_be_visible(visible=should_visible, timeout=5000)
         return self
 
     def click(self, timeout: int = 2000, force: bool = False) -> "BaseElement":
@@ -116,5 +116,7 @@ class BaseElement:
         self._get_locator().wait_for(timeout=timeout)
         return self
 
+    def get_child_locator(self, locator: str) -> "BaseElement":
+        return self.chain(BaseElement(By.LOCATOR, locator))
 
 Element = BaseElement

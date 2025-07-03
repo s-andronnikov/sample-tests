@@ -20,7 +20,7 @@ class UIRoutes:
     """UI route constants"""
 
     # Auth routes
-    LOGIN = "/login"
+    LOGIN = "login"
     REGISTER = "/register"
 
     # User routes

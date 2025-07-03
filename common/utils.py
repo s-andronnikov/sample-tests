@@ -5,9 +5,7 @@ import string
 import time
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
-
-from config import base_settings
+from typing import Any, Dict
 
 
 def generate_random_string(length: int = 10) -> str:
