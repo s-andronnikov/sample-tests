@@ -24,6 +24,7 @@ class AssetClassPage(BasePage):
 
     form_container = Element(By.LOCATOR, "form", form_wrapper)
     name_input = Element(By.LOCATOR, "input[name='name']")
+    form_title = Element(By.LOCATOR, "p.title", form_wrapper)
 
     depreciation_profile_element = Element(By.LOCATOR, "[name='deprProfileId'][role='combobox']", form_container)
     depreciation_profile_select = Element(By.LOCATOR, "i", parent=depreciation_profile_element)
@@ -130,3 +131,72 @@ class AssetClassPage(BasePage):
             if self.ag_grid.get_cell_by_row_and_text(row, name).is_visible():
                 return True
         return False
+
+    def select_first_row(self):
+        """Select the first row in the grid
+
+        Returns:
+            The selected row and its name
+        """
+        rows = self.ag_grid.get_rows()
+        if not rows:
+            raise ValueError("No rows found in the grid")
+
+        # Get the first row
+        first_row = rows[0]
+
+        # Find the name cell in the first row
+        name_cell = self.ag_grid.get_cell_by_row_and_text(first_row, "Name")
+        row_name = name_cell.get_text()
+
+        # Click on the row to select it
+        first_row.click()
+
+        return first_row, row_name
+
+    def hover_actions_cell(self, row):
+        """Hover over the Actions cell in the given row
+
+        Args:
+            row: The row to hover actions cell on
+
+        Returns:
+            The Actions cell element
+        """
+        actions_cell = self.ag_grid.get_cell_by_row_and_text(row, "Actions")
+        actions_cell.hover()
+        return actions_cell
+
+    def click_edit_icon(self):
+        """Click the edit icon that appears when hovering over Actions cell
+
+        Returns:
+            Self for method chaining
+        """
+        edit_icon = Element(By.LOCATOR, "[data-icon='pen-to-square']")
+        edit_icon.should_be_visible().click()
+        return self
+
+    def edit_asset_class_name(self, new_name):
+        """Edit the asset class name in the edit form
+
+        Args:
+            new_name: The new name for the asset class
+
+        Returns:
+            Self for method chaining
+        """
+        self.name_input.should_be_visible()
+        current_name = self.name_input._get_locator().input_value()
+        self.name_input.fill(new_name)
+        return self, current_name
+
+    def save_edited_form(self):
+        """Save the edited form by clicking the Save button
+
+        Returns:
+            Self for method chaining
+        """
+        self.action_button_save.should_be_enabled().click()
+        self.form_container.should_be_visible(should_visible=False)
+        return self
