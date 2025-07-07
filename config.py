@@ -11,6 +11,7 @@ class BaseConfig(BaseSettings):
     headless_mode: bool = Field(True, description="Run browser in headless mode")
     demo_test: bool = Field(False, description="Run tests in demo mode")
     timeout: int = Field(10000, description="Default timeout in milliseconds")
+    depreciation_id: str = Field("9aa52b3f-f76d-438d-9557-92984bd9e1fc", description="Depreciation ID for asset class tests")
 
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 

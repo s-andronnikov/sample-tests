@@ -34,3 +34,6 @@ class UIRoutes:
 
     # Dashboard
     DASHBOARD = "/dashboard"
+
+    # Depreciation routes
+    DEPRECIATION_ASSET_CLASS = "/depreciation/{}/configurations/asset-class"

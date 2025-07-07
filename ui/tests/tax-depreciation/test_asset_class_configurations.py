@@ -1,0 +1,28 @@
+import pytest
+
+from config import base_settings
+from ui.pages.asset_class_page import AssetClassPage
+
+
+@pytest.fixture
+def asset_class_page() -> AssetClassPage:
+    """Return a AssetClassPage instance"""
+    return AssetClassPage()
+
+
+@pytest.mark.ui
+class TestAssetClassConfigurations:
+
+    def test_asset_class_configurations_page_loads(self, asset_class_page: AssetClassPage):
+        """Test that the tax-depreciation asset class configurations page loads successfully with correct grid headers"""
+        # Constants
+        expected_headers = ["Name", "Depreciation Profile", "Tags", "Actions"]
+
+        # Open the page with the specific depreciation ID from config
+        asset_class_page.open_with_id(base_settings.depreciation_id)
+
+        # Verify the page loads successfully
+        assert asset_class_page.is_page_loaded(), "Asset class configurations page failed to load"
+
+        # Verify the grid headers
+        asset_class_page.verify_grid_headers(expected_headers)

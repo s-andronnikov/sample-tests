@@ -1,5 +1,6 @@
 import pytest
 
+from ui.pages.asset_class_page import AssetClassPage
 from ui.pages.contact_page import ContactPage
 from ui.pages.login_page import LoginPage
 from ui.pages.user_page import UserPage
@@ -20,6 +21,12 @@ def user_page() -> UserPage:
 def contact_page() -> ContactPage:
     """Return a ContactPage instance"""
     return ContactPage()
+
+
+@pytest.fixture
+def asset_class_page() -> AssetClassPage:
+    """Return an AssetClassPage instance"""
+    return AssetClassPage()
 
 
 @pytest.fixture
