@@ -13,7 +13,7 @@ def asset_class_page() -> AssetClassPage:
 @pytest.mark.ui
 class TestAssetClassConfigurations:
 
-    @pytest.mark.skip
+    # @pytest.mark.skip
     def test_asset_class_configurations_page_loads(self, authenticated_asset_class_page: AssetClassPage):
         """Test that the tax-depreciation asset class configurations page loads successfully with correct grid headers"""
         # Constants
@@ -80,7 +80,8 @@ class TestAssetClassConfigurations:
     #
     #     # Check that the form title contains the original name
     #     form_title_text = authenticated_asset_class_page.form_title.get_text()
-    #     assert f"Edit {original_name}" in form_title_text, f"Expected form title to contain 'Edit {original_name}', got '{form_title_text}'"
+    #     assert f"Edit {original_name}" in form_title_text,
+    #       f"Expected form title to contain 'Edit {original_name}', got '{form_title_text}'"
     #
     #     # Modify the name by adding '112' prefix
     #     new_name = f"112{original_name}"

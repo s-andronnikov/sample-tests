@@ -4,6 +4,7 @@ from ui.decorators.auth_decorator import UserRole, with_auth
 
 
 @pytest.mark.ui
+@pytest.mark.skip(reason="Sample only")
 @with_auth(UserRole.ADMIN)
 class TestWithAdminAuth:
     """Example test class using admin authentication"""
@@ -15,6 +16,7 @@ class TestWithAdminAuth:
 
 
 @pytest.mark.ui
+@pytest.mark.skip(reason="Sample only")
 @with_auth(UserRole.USER)
 class TestWithUserAuth:
     """Example test class using regular user authentication"""
@@ -26,6 +28,7 @@ class TestWithUserAuth:
 
 
 @pytest.mark.ui
+@pytest.mark.skip(reason="Sample only")
 @with_auth(UserRole.READONLY)
 class TestWithReadOnlyAuth:
     """Example test class using read-only user authentication"""
@@ -37,6 +40,7 @@ class TestWithReadOnlyAuth:
 
 
 @pytest.mark.ui
+@pytest.mark.skip(reason="Sample only")
 @with_auth()  # Default is ADMIN
 class TestWithDefaultAuth:
     """Example test class using default authentication (admin)"""
