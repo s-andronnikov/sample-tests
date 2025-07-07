@@ -1,10 +1,61 @@
 import pytest_asyncio
+import pytest
+import pytest_asyncio
 
+from ui.pages.asset_class_page import AssetClassPage
+from ui.pages.login_page import LoginPage
+
+
+@pytest_asyncio.fixture
+async def login_page():
+    """Return a login page instance"""
+    return LoginPage()
+
+
+@pytest_asyncio.fixture
+async def asset_class_page():
+    """Return an asset class page instance"""
+    return AssetClassPage()
+
+
+@pytest_asyncio.fixture
+async def authenticated_asset_class_page(login_page):
+    """Return an authenticated asset class page instance"""
+    await login_page.open()
+    await login_page.login("admin", "password")
+    await login_page.should_be_redirected_from_login()
+
+    return AssetClassPage()
 from ui.pages.contact_page import ContactPage
 from ui.pages.login_page import LoginPage
 from ui.pages.user_page import UserPage
 
+import pytest
 
+from ui.pages.asset_class_page import AssetClassPage
+from ui.pages.login_page import LoginPage
+
+
+@pytest.fixture
+def login_page():
+    """Return a login page instance"""
+    return LoginPage()
+
+
+@pytest.fixture
+def asset_class_page():
+    """Return an asset class page instance"""
+    return AssetClassPage()
+
+
+@pytest.fixture
+def authenticated_asset_class_page(login_page):
+    """Return an authenticated asset class page instance"""
+    login_page.open()
+    login_page.login("admin", "password")
+    login_page.should_be_redirected_from_login()
+
+    return AssetClassPage()
 @pytest_asyncio.fixture
 def login_page(browser_fixture) -> LoginPage:
     return LoginPage()

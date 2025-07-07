@@ -34,3 +34,5 @@ class UIRoutes:
 
     # Dashboard
     DASHBOARD = "/dashboard"
+
+    ASSET_CLASS = "/depreciation/9aa52b3f-f76d-438d-9557-92984bd9e1fc/configurations/asset-class"
