@@ -36,6 +36,7 @@ class AssetClassPage(BasePage):
     action_buttons_wrapper = Element(By.LOCATOR, "[class='action-buttons']", form_wrapper)
     action_button_cancel = Element(By.LOCATOR, "button:has-text('Cancel')", action_buttons_wrapper)
     action_button_create = Element(By.LOCATOR, "button:has-text('Create')", action_buttons_wrapper)
+    action_button_save = Element(By.LOCATOR, "button:has-text('Save')", action_buttons_wrapper)
 
     def __init__(self):
         super().__init__()
