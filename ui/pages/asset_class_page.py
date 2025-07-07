@@ -30,8 +30,8 @@ class AssetClassPage(BasePage):
     depreciation_profile_select = Element(By.LOCATOR, "i", parent=depreciation_profile_element)
     depreciation_profile_options = Element(By.LOCATOR, "[role='option']", parent=depreciation_profile_element)
 
-    form_tags_element = Element(By.LOCATOR, ".dimensional-tag", form_container)
-    form_tags_select = Element(By.LOCATOR, "i", parent=form_tags_element)
+    form_tags_element = Element(By.LOCATOR, ".field.dimensional-tag", form_container)
+    form_tags_select = Element(By.LOCATOR, "input", parent=form_tags_element)
     form_tags_options = Element(By.LOCATOR, "[class='result']", parent=form_tags_element)
 
     action_buttons_wrapper = Element(By.LOCATOR, "[class='action-buttons']", form_wrapper)
@@ -98,12 +98,12 @@ class AssetClassPage(BasePage):
             profile_options[0].click()
 
         # # Select the first and second tags
-        # self.form_tags_select.click()
-        #
-        # # Get all tag options and select the first two if available
-        # tag_options = self.form_tags_options.all()
-        # if tag_options:
-        #     tag_options[0].click()
+        self.form_tags_select.click()
+
+        # Get all tag options and select the first two if available
+        tag_options = self.form_tags_options.all()
+        if tag_options:
+            tag_options[0].click()
 
         return name
 
