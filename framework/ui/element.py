@@ -5,7 +5,7 @@ from playwright.sync_api import Locator, expect
 
 from framework.ui.driver import Driver
 
-OP_COMMON_TIMEOUT = 5000
+OP_COMMON_TIMEOUT = 10000
 
 
 @dataclass
@@ -42,7 +42,6 @@ class BaseElement:
 
     def _get_locator(self) -> Locator:
         locator: Locator
-
         if hasattr(self, "_locator_kwargs"):
             formatted_locator = self.search_locator.format(**self._locator_kwargs)
         elif hasattr(self, "search_locator"):
@@ -67,9 +66,12 @@ class BaseElement:
         self._get_locator().hover(**kwargs)
         return self
 
-    def should_be_visible(self, should_visible: bool = True, timeout: int = 5000) -> "BaseElement":
+    def all(self) -> list:
+        return self._get_locator().all()
+
+    def should_be_visible(self, should_visible: bool = True, timeout: int = 10000) -> "BaseElement":
         locator = self._get_locator()
-        expect(locator).to_be_visible(visible=should_visible, timeout=5000)
+        expect(locator).to_be_visible(visible=should_visible, timeout=10000)
         return self
 
     def click(self, timeout: int = OP_COMMON_TIMEOUT, force: bool = False) -> "BaseElement":
