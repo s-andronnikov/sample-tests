@@ -57,9 +57,8 @@ def with_auth(role: UserRole = UserRole.ADMIN):
         # Store original setup method if it exists
         original_setup = getattr(cls, "setup_class", None)
 
-        @classmethod
-        @functools.wraps(original_setup or (lambda cls: None))
-        def setup_with_auth(cls):
+        @functools.wraps(original_setup or (lambda dec_cls: None))
+        def setup_with_auth(dec_cls):
             # Call original setup_class if it exists
             if original_setup:
                 original_setup()
@@ -76,10 +75,10 @@ def with_auth(role: UserRole = UserRole.ADMIN):
             login_page.should_be_redirected_from_login()
 
             # Store authenticated state on the class
-            cls._auth_role = role
+            dec_cls._auth_role = role
 
         # Replace setup_class with our authenticated version
-        setattr(cls, "setup_class", setup_with_auth)
+        cls.setup_class = setup_with_auth
         return cls
 
     return decorator
