@@ -1,5 +1,3 @@
-from typing import Optional
-
 from playwright.sync_api import Locator
 from framework.ui.element import BaseElement, By, Element
 
@@ -68,7 +66,7 @@ class AgGridHelper:
         return len(self.get_rows(parent))
 
     @staticmethod
-    def get_cell_by_row_and_header(row, header_text: str, parent: Optional[BaseElement] = None) -> BaseElement:
+    def get_cell_by_row_and_header(row, header_text: str, parent: BaseElement | None = None) -> BaseElement:
         """Get a cell by row and header text
 
         Args:

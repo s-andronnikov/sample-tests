@@ -164,7 +164,7 @@ class AssetClassPage(BasePage):
             row_name = cells[0].text_content().strip()
         else:
             # Fallback approach - try to get any text from the row
-            row_name = first_row.text_content().strip().split('\n')[0]
+            row_name = first_row.text_content().strip().split("\n")[0]
 
         return first_row, row_name
 
