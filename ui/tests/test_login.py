@@ -1,6 +1,7 @@
 import pytest
 from faker.proxy import Faker
 
+from config import base_settings
 from ui.pages.login_page import LoginPage
 
 fake = Faker()
@@ -18,6 +19,6 @@ class TestLogin:
 
     def test_success_login(self, login_page: LoginPage):
         login_page.open()
-        login_page.login("admin", "password")
+        login_page.login(base_settings.admin_username, base_settings.admin_password)
 
         login_page.should_be_redirected_from_login()

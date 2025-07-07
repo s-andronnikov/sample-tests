@@ -1,6 +1,7 @@
 import pytest
 
 from config import base_settings
+from ui.decorators.auth_decorator import UserRole, with_auth
 from ui.pages.asset_class_page import AssetClassPage
 
 
@@ -11,6 +12,7 @@ def asset_class_page() -> AssetClassPage:
 
 
 @pytest.mark.ui
+@with_auth(UserRole.ADMIN)
 class TestAssetClassConfigurations:
 
     def test_asset_class_configurations_page_loads(self, asset_class_page: AssetClassPage):
