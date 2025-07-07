@@ -66,13 +66,16 @@ class BaseElement:
         self._get_locator().hover(**kwargs)
         return self
 
-    def all(self) -> list:
+    def all(self) -> list[Locator]:
         return self._get_locator().all()
 
-    def should_be_visible(self, should_visible: bool = True, timeout: int = 10000) -> "BaseElement":
+    def should_be_visible(self, should_visible: bool = True, timeout: int = OP_COMMON_TIMEOUT) -> "BaseElement":
         locator = self._get_locator()
-        expect(locator).to_be_visible(visible=should_visible, timeout=10000)
+        expect(locator).to_be_visible(visible=should_visible, timeout=timeout)
         return self
+
+    def is_visible(self) -> bool:
+        return self._get_locator().is_visible()
 
     def click(self, timeout: int = OP_COMMON_TIMEOUT, force: bool = False) -> "BaseElement":
         self._get_locator().click(timeout=timeout, force=force)
@@ -112,7 +115,7 @@ class BaseElement:
         expect(self._get_locator()).to_have_count(count)
         return self
 
-    def wait_for(self, timeout: int = 5000) -> "BaseElement":
+    def wait_for(self, timeout: int = OP_COMMON_TIMEOUT) -> "BaseElement":
         self._get_locator().wait_for(timeout=timeout)
         return self
 

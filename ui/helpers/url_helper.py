@@ -26,7 +26,7 @@ class UrlHelper:
         elif kwargs:
             formatted_route = route.format(**kwargs)
 
-        return formatted_route.lstrip('/')
+        return formatted_route.lstrip("/")
 
     @staticmethod
     def build_full_url(route: str, *args, **kwargs) -> str:

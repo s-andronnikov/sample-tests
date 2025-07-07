@@ -29,6 +29,7 @@ def asset_class_page() -> AssetClassPage:
     """Return an AssetClassPage instance"""
     return AssetClassPage()
 
+
 @pytest.fixture
 def authenticated_asset_class_page(login_page, asset_class_page) -> AssetClassPage:
     """Return a UserPage instance with authenticated user"""

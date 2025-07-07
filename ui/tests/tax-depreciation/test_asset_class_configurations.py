@@ -1,9 +1,7 @@
 import pytest
 
 from config import base_settings
-from ui.decorators.auth_decorator import UserRole, with_auth
 from ui.pages.asset_class_page import AssetClassPage
-from ui.pages.login_page import LoginPage
 
 
 @pytest.fixture
@@ -41,7 +39,7 @@ class TestAssetClassConfigurations:
         # Click the Create button to open the form
         authenticated_asset_class_page.click_create_button()
         # Verify form is visible
-        # assert authenticated_asset_class_page.form_container.is_visible(), "Create form did not appear"
+        assert authenticated_asset_class_page.form_container.is_visible(), "Create form did not appear"
 
         # Fill the form with random name, select first depreciation profile, and first two tags
         asset_class_name = authenticated_asset_class_page.fill_asset_class_form()
@@ -54,5 +52,6 @@ class TestAssetClassConfigurations:
         assert not authenticated_asset_class_page.form_container.is_visible(), "Form is still visible after submission"
 
         # Verify the new asset class appears in the grid
-        assert authenticated_asset_class_page.verify_asset_class_in_grid(asset_class_name), \
-            f"Asset class '{asset_class_name}' not found in grid after creation"
+        assert authenticated_asset_class_page.verify_asset_class_in_grid(
+            asset_class_name
+        ), f"Asset class '{asset_class_name}' not found in grid after creation"

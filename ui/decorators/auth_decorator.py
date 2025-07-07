@@ -1,9 +1,6 @@
 import functools
-import inspect
 from enum import Enum, auto
-from typing import Callable, Type, TypeVar, cast
-
-import pytest
+from typing import TypeVar
 
 from config import base_settings
 from ui.pages.login_page import LoginPage
@@ -11,12 +8,13 @@ from ui.pages.login_page import LoginPage
 
 class UserRole(Enum):
     """User roles for authentication"""
+
     ADMIN = auto()
     USER = auto()
     READONLY = auto()
 
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 def _get_credentials(role: UserRole) -> tuple[str, str]:
@@ -54,7 +52,8 @@ def with_auth(role: UserRole = UserRole.ADMIN):
                 # Test is run with admin user authenticated
                 pass
     """
-    def decorator(cls: Type[T]) -> Type[T]:
+
+    def decorator(cls: type[T]) -> type[T]:
         # Store original setup method if it exists
         original_setup = getattr(cls, "setup_class", None)
 

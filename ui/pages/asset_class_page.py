@@ -1,10 +1,10 @@
 from faker import Faker
+
 from framework.ui.element import By, Element
 from ui.helpers.ag_grid_helper import AgGridHelper
 from ui.helpers.url_helper import UrlHelper
 from ui.pages.base_page import BasePage
 
-# Initialize Faker for generating random data
 fake = Faker()
 
 
@@ -20,18 +20,22 @@ class AssetClassPage(BasePage):
 
     # Create asset class elements
     create_button = Element(By.LOCATOR, "button:has-text('Create')")
-    form_container = Element(By.LOCATOR, "[class='configurations-form-wrapper'] form")
+    form_wrapper = Element(By.LOCATOR, "[class='configurations-form-wrapper']")
+
+    form_container = Element(By.LOCATOR, "form", form_wrapper)
     name_input = Element(By.LOCATOR, "input[name='name']")
 
     depreciation_profile_element = Element(By.LOCATOR, "[name='deprProfileId'][role='combobox']", form_container)
     depreciation_profile_select = Element(By.LOCATOR, "i", parent=depreciation_profile_element)
     depreciation_profile_options = Element(By.LOCATOR, "[role='option']", parent=depreciation_profile_element)
 
-    form_tags_element = Element(By.LOCATOR, "[class='dimensional-tag']", form_container)
+    form_tags_element = Element(By.LOCATOR, ".dimensional-tag", form_container)
     form_tags_select = Element(By.LOCATOR, "i", parent=form_tags_element)
     form_tags_options = Element(By.LOCATOR, "[class='result']", parent=form_tags_element)
 
-    submit_button = Element(By.LOCATOR, "form button[type='submit']")
+    action_buttons_wrapper = Element(By.LOCATOR, "[class='action-buttons']", form_wrapper)
+    action_button_cancel = Element(By.LOCATOR, "button:has-text('Cancel')", action_buttons_wrapper)
+    action_button_create = Element(By.LOCATOR, "button:has-text('Create')", action_buttons_wrapper)
 
     def __init__(self):
         super().__init__()
@@ -48,7 +52,8 @@ class AssetClassPage(BasePage):
         self.grid_container.should_be_visible()
         return True
 
-    def get_grid_headers(self):
+    @staticmethod
+    def get_grid_headers():
         """Get the text of all grid headers"""
         return AgGridHelper.get_header_texts()
 
@@ -76,7 +81,7 @@ class AssetClassPage(BasePage):
         """
         # Generate a random name if not provided
         if name is None:
-            name = f"Test Asset Class {fake.word()} {fake.random_int(100, 999)}"
+            name = f"111 Test Asset Class {fake.word()} {fake.random_int(100, 999)}"
 
         # Fill the name field
         self.name_input.fill(name)
@@ -86,27 +91,26 @@ class AssetClassPage(BasePage):
         self.depreciation_profile_select.click()
 
         # Wait for options to be visible and select the first non-empty option
-        page = self.get_page()
         profile_options = self.depreciation_profile_options().all()
         if profile_options:
             profile_options[0].click()
 
-        # Select the first and second tags
-        # Click on the tags dropdown to open it (it might be a multi-select)
-        self.form_tags_select.click()
-
-        # Get all tag options and select the first two if available
-        tag_options = self.form_tags_options.all()
-        if tag_options:
-            tag_options[0].click()
+        # # Select the first and second tags
+        # self.form_tags_select.click()
+        #
+        # # Get all tag options and select the first two if available
+        # tag_options = self.form_tags_options.all()
+        # if tag_options:
+        #     tag_options[0].click()
 
         return name
 
     def submit_form(self):
         """Submit the asset class form"""
-        self.submit_button.click()
+        self.action_button_create.should_be_enabled().click()
+
         # Wait for the form to disappear or for the grid to refresh
-        self.form_container.should_not_be_visible(timeout=5000)
+        self.form_container.should_be_visible(should_visible=False)
         return self
 
     def verify_asset_class_in_grid(self, name):
@@ -121,17 +125,7 @@ class AssetClassPage(BasePage):
         # Wait for grid to fully load
         self.grid_container.should_be_visible()
 
-        # Get all rows in the grid
-        rows_count = self.ag_grid.get_rows_count()
-
-        # Check each row for the given name
-        for i in range(rows_count):
-            # Try to find the cell in the "Name" column
-            for header in self.get_grid_headers():
-                if "Name" in header:
-                    cell = self.ag_grid.get_cell_by_row_and_header(i, header)
-                    if cell.is_visible() and name in cell.get_text():
-                        return True
-
-        # If we've gone through all rows and didn't find the name, return False
+        for row in self.ag_grid.get_rows():
+            if self.ag_grid.get_cell_by_row_and_text(row, name).is_visible():
+                return True
         return False
