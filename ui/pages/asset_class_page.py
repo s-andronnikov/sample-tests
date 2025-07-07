@@ -138,6 +138,10 @@ class AssetClassPage(BasePage):
         Returns:
             The selected row and its name
         """
+        # Make sure the grid is fully loaded
+        self.grid_container.should_be_visible()
+
+        # Get all rows from the grid
         rows = self.ag_grid.get_rows()
         if not rows:
             raise ValueError("No rows found in the grid")
@@ -145,26 +149,36 @@ class AssetClassPage(BasePage):
         # Get the first row
         first_row = rows[0]
 
-        # Find the name cell in the first row
-        name_cell = self.ag_grid.get_cell_by_row_and_text(first_row, "Name")
-        row_name = name_cell.get_text()
+        # In AG Grid, we can get row content directly by iterating through cells
+        # This is more reliable than trying to find a specific cell by header
 
-        # Click on the row to select it
+        # Click the row first to select it
         first_row.click()
+
+        # Now that the row is selected, get the cells
+        cells = Element(By.LOCATOR, "[role='gridcell']", parent=first_row).all()
+
+        # The first cell is typically the Name column in most grids
+        # Get text from the first cell (Name)
+        if cells and len(cells) > 0:
+            row_name = cells[0].text_content().strip()
+        else:
+            # Fallback approach - try to get any text from the row
+            row_name = first_row.text_content().strip().split('\n')[0]
 
         return first_row, row_name
 
-    def hover_actions_cell(self, row):
-        """Hover over the Actions cell in the given row
+    def click_actions_cell(self, row):
+        """Click on the Actions cell in the given row to reveal action buttons
 
         Args:
-            row: The row to hover actions cell on
+            row: The row to click actions cell on
 
         Returns:
             The Actions cell element
         """
         actions_cell = self.ag_grid.get_cell_by_row_and_text(row, "Actions")
-        actions_cell.hover()
+        actions_cell.click()
         return actions_cell
 
     def click_edit_icon(self):

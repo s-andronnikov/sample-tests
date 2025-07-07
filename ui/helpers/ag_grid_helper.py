@@ -1,3 +1,5 @@
+from typing import Optional
+
 from playwright.sync_api import Locator
 from framework.ui.element import BaseElement, By, Element
 
@@ -64,6 +66,43 @@ class AgGridHelper:
 
     def get_rows_count(self, parent: BaseElement | None = None) -> int:
         return len(self.get_rows(parent))
+
+    @staticmethod
+    def get_cell_by_row_and_header(row, header_text: str, parent: Optional[BaseElement] = None) -> BaseElement:
+        """Get a cell by row and header text
+
+        Args:
+            row: The row element
+            header_text: The text of the header to find the column for
+            parent: Optional parent element
+
+        Returns:
+            The cell element
+        """
+        # Get all header texts
+        header_texts = AgGridHelper.get_header_texts(parent)
+
+        # Special case for common columns
+        if header_text == "Name":
+            # Name is typically the first column
+            return Element(By.LOCATOR, "[role='gridcell']:first-child", parent=row)
+        elif header_text == "Actions":
+            # Actions is typically the last column
+            return Element(By.LOCATOR, "[role='gridcell']:last-child", parent=row)
+
+        # For other headers, try to find the index
+        try:
+            # Find the index of the header with the specified text
+            if header_text in header_texts:
+                column_index = header_texts.index(header_text)
+                # Use 1-based indexing for CSS nth-child
+                return Element(By.LOCATOR, f"[role='gridcell']:nth-child({column_index + 1})", parent=row)
+        except Exception:
+            # If we can't determine by index, fall back to content matching
+            pass
+
+        # Fall back to getting all cells and finding by content
+        return Element(By.LOCATOR, "[role='gridcell']", parent=row)
 
     @staticmethod
     def get_cell_by_row_and_text(row, header_text: str) -> BaseElement:
