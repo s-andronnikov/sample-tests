@@ -36,9 +36,10 @@ A comprehensive testing framework for both UI and API testing using Playwright, 
 ## Setup
 
 1. Install Poetry: `pip install poetry`
-2. Install dependencies: `poetry install`
-3. Configure environment variables in `.env` file
-4. Install Playwright browsers: `poetry run playwright install`
+2. Install `postgresql`
+3. Install dependencies: `poetry install`. If crashes (MacOS), `poetry lock` first.
+4. Configure environment variables in `.env` file
+5. Install Playwright browsers: `poetry run playwright install`
 
 ## Running Tests
 

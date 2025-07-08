@@ -13,6 +13,7 @@ class LoginPage(BasePage):
     error_toast = Element(By.LOCATOR, ".Toastify__toast--error")
 
     def login(self, login: str, password: str):
+        self.el_login.should_be_visible()
         self.el_login.fill(login)
         self.el_password.fill(password)
         self.el_login_btn.click()

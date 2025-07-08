@@ -24,14 +24,14 @@ class Driver:
 
     @classmethod
     def new_workspace(cls) -> None:
-        """Create a new browser context and page"""
+        """Create a new browser context and page (incognito mode)"""
         if cls.browser:
             new_context = cls.browser.new_context(
                 ignore_https_errors=True,
                 locale="en-US",
                 viewport=ViewportSize(width=1920, height=1080),
                 timezone_id="America/New_York",
-                storage_state=cls.auth_state_path if cls.auth_state_path.exists() else None,
+                storage_state=None,  # Always start fresh (incognito)
             )
             new_context.set_default_timeout(base_settings.timeout)
 
