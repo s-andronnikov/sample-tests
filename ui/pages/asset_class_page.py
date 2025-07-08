@@ -1,6 +1,6 @@
 from faker import Faker
 
-from framework.ui.element import By, Element
+from framework.ui.element import By, Element, BaseElement
 from ui.helpers.ag_grid_helper import AgGridHelper
 from ui.helpers.url_helper import UrlHelper
 from ui.pages.base_page import BasePage
@@ -16,7 +16,7 @@ class AssetClassPage(BasePage):
 
     # Page elements
     title_element = Element(By.LOCATOR, "h3:has-text('Asset Class')")
-    grid_container = Element(By.LOCATOR, ".ag-root-wrapper")
+    grid_container = Element(By.LOCATOR, ".configuration-table")
 
     # Create asset class elements
     create_button = Element(By.LOCATOR, "button:has-text('Create')")
@@ -39,6 +39,9 @@ class AssetClassPage(BasePage):
     action_button_create = Element(By.LOCATOR, "button:has-text('Create')", action_buttons_wrapper)
     action_button_save = Element(By.LOCATOR, "button:has-text('Save')", action_buttons_wrapper)
 
+    col_id_name = "name"
+    col_id_actions = "actions"
+
     def __init__(self):
         super().__init__()
         self.ag_grid = AgGridHelper()
@@ -54,14 +57,14 @@ class AssetClassPage(BasePage):
         self.grid_container.should_be_visible()
         return True
 
-    @staticmethod
-    def get_grid_headers():
+    def get_grid_headers(self):
         """Get the text of all grid headers"""
-        return AgGridHelper.get_header_texts()
+        return self.ag_grid.get_header_texts(self.grid_container)
 
     def verify_grid_headers(self, expected_headers):
         """Verify that the grid has the expected headers"""
         actual_headers = self.get_grid_headers()
+
         for header in expected_headers:
             assert header in actual_headers, f"Header '{header}' not found in grid headers: {actual_headers}"
         return self
@@ -127,68 +130,33 @@ class AssetClassPage(BasePage):
         # Wait for grid to fully load
         self.grid_container.should_be_visible()
 
-        for row in self.ag_grid.get_rows():
-            if self.ag_grid.get_cell_by_row_and_text(row, name).is_visible():
+        for row in self.ag_grid.get_grid_body_rows().all():
+            if self.ag_grid.get_cell_by_row_and_text(name, row).is_visible():
                 return True
         return False
 
-    def select_first_row(self):
-        """Select the first row in the grid
-
-        Returns:
-            The selected row and its name
-        """
-        # Make sure the grid is fully loaded
+    def select_first_row(self) -> BaseElement:
         self.grid_container.should_be_visible()
 
-        # Get all rows from the grid
-        rows = self.ag_grid.get_rows()
-        if not rows:
-            raise ValueError("No rows found in the grid")
+        return self.ag_grid.get_grid_body_row_position(1, self.grid_container)
 
-        # Get the first row
-        first_row = rows[0]
+    def get_name_value_by_row(self, row: BaseElement) -> str:
+        name_cell = self.ag_grid.get_grid_body_row_cell_by_col_id(row, self.col_id_name)
 
-        # In AG Grid, we can get row content directly by iterating through cells
-        # This is more reliable than trying to find a specific cell by header
+        return name_cell.get_text()
 
-        # Click the row first to select it
-        first_row.click()
+    def get_actions_cell(self, row):
+        return self.ag_grid.get_grid_body_row_cell_by_col_id(row, self.col_id_actions)
 
-        # Now that the row is selected, get the cells
-        cells = Element(By.LOCATOR, "[role='gridcell']", parent=first_row).all()
-
-        # The first cell is typically the Name column in most grids
-        # Get text from the first cell (Name)
-        if cells and len(cells) > 0:
-            row_name = cells[0].text_content().strip()
-        else:
-            # Fallback approach - try to get any text from the row
-            row_name = first_row.text_content().strip().split("\n")[0]
-
-        return first_row, row_name
-
-    def click_actions_cell(self, row):
-        """Click on the Actions cell in the given row to reveal action buttons
-
-        Args:
-            row: The row to click actions cell on
-
-        Returns:
-            The Actions cell element
-        """
-        actions_cell = self.ag_grid.get_cell_by_row_and_text(row, "Actions")
-        actions_cell.click()
-        return actions_cell
-
-    def click_edit_icon(self):
+    def click_edit_icon(self, actions_cell: BaseElement):
         """Click the edit icon that appears when hovering over Actions cell
 
         Returns:
             Self for method chaining
         """
-        edit_icon = Element(By.LOCATOR, "[data-icon='pen-to-square']")
+        edit_icon = Element(By.LOCATOR, ".pencil", parent=actions_cell)
         edit_icon.should_be_visible().click()
+
         return self
 
     def edit_asset_class_name(self, new_name):
