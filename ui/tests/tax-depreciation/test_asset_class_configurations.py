@@ -18,7 +18,7 @@ class TestAssetClassConfigurations:
         expected_headers = ["Name", "Depreciation Profile", "Tags", "Actions"]
 
         # Open the page with the specific depreciation ID from config
-        authenticated_asset_class_page.open_with_id(base_settings.depreciation_id)
+        authenticated_asset_class_page.open_with_id(base_settings.depr_case_id)
 
         # Verify the page loads successfully
         assert authenticated_asset_class_page.is_page_loaded(), "Asset class configurations page failed to load"
@@ -30,7 +30,7 @@ class TestAssetClassConfigurations:
     def test_create_asset_class(self, authenticated_asset_class_page: AssetClassPage):
         """Test creating a new asset class"""
         # Open the asset class page with the specified depreciation ID
-        authenticated_asset_class_page.open_with_id(base_settings.depreciation_id)
+        authenticated_asset_class_page.open_with_id(base_settings.depr_case_id)
 
         # Verify the page loads successfully
         assert authenticated_asset_class_page.is_page_loaded(), "Asset class configurations page failed to load"
@@ -58,7 +58,7 @@ class TestAssetClassConfigurations:
     def test_edit_asset_class_name(self, authenticated_asset_class_page: AssetClassPage):
         """Test editing an asset class name"""
         # Open the asset class page with the specified depreciation ID
-        authenticated_asset_class_page.open_with_id(base_settings.depreciation_id)
+        authenticated_asset_class_page.open_with_id(base_settings.depr_case_id)
 
         # Verify the page loads successfully
         assert authenticated_asset_class_page.is_page_loaded(), "Asset class configurations page failed to load"

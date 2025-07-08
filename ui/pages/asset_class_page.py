@@ -46,9 +46,9 @@ class AssetClassPage(BasePage):
         super().__init__()
         self.ag_grid = AgGridHelper()
 
-    def open_with_id(self, depreciation_id: str):
+    def open_with_id(self, depr_case_id: str):
         """Open the asset class page with the given depreciation ID"""
-        self.url = UrlHelper.depreciation_asset_class(depreciation_id)
+        self.url = UrlHelper.depreciation_asset_class(depr_case_id)
         return self.open()
 
     def is_page_loaded(self) -> bool:
@@ -57,13 +57,9 @@ class AssetClassPage(BasePage):
         self.grid_container.should_be_visible()
         return True
 
-    def get_grid_headers(self):
-        """Get the text of all grid headers"""
-        return self.ag_grid.get_header_texts(self.grid_container)
-
     def verify_grid_headers(self, expected_headers):
         """Verify that the grid has the expected headers"""
-        actual_headers = self.get_grid_headers()
+        actual_headers = self.ag_grid.get_header_texts(self.grid_container)
 
         for header in expected_headers:
             assert header in actual_headers, f"Header '{header}' not found in grid headers: {actual_headers}"

@@ -44,16 +44,16 @@ class UrlHelper:
         return f"{base_settings.protocol}://{base_settings.host}/{path}"
 
     @classmethod
-    def depreciation_asset_class(cls, depreciation_id: str) -> str:
+    def depreciation_asset_class(cls, depr_case_id: str) -> str:
         """Build URL for depreciation asset class page
 
         Args:
-            depreciation_id: The depreciation ID
+            depr_case_id: The depreciation ID
 
         Returns:
             URL path for the depreciation asset class page
         """
-        return cls.build_full_url(UIRoutes.DEPRECIATION_ASSET_CLASS, depreciation_id)
+        return cls.build_full_url(UIRoutes.DEPRECIATION_ASSET_CLASS, depr_case_id)
 
     @classmethod
     def user_details(cls, user_id: str) -> str:
