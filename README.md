@@ -2,6 +2,10 @@
 
 A comprehensive testing framework for both UI and API testing using Playwright, Pytest, and Pydantic.
 
+## Requirements
+
+- Python 3.12 or higher
+
 ## Project Structure
 
 ```
@@ -35,10 +39,44 @@ A comprehensive testing framework for both UI and API testing using Playwright, 
 
 ## Setup
 
-1. Install Poetry: `pip install poetry`
-2. Install dependencies: `poetry install`
-3. Configure environment variables in `.env` file
-4. Install Playwright browsers: `poetry run playwright install`
+### 1. Create Virtual Environment
+
+```bash
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+# On Linux/Mac:
+source venv/bin/activate
+# On Windows:
+venv\Scripts\activate
+```
+
+### 2. Upgrade pip
+
+```bash
+pip install --upgrade pip
+```
+
+### 3. Install Dependencies
+
+```bash
+# Install Poetry
+pip install poetry
+
+# Install project dependencies
+poetry install
+```
+
+### 4. Configure Environment
+
+Configure environment variables in `.env` file
+
+### 5. Install Playwright Browsers
+
+```bash
+poetry run playwright install
+```
 
 ## Running Tests
 
