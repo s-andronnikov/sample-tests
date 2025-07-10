@@ -45,7 +45,7 @@ class AssetClassPage(BasePage):
     confirmation_delete_button = Element(By.LOCATOR, "button:has-text('Delete')", confirmation_popup)
 
     # Toaster message
-    toaster_message = Element(By.LOCATOR, ".ui.toast-container .toast")
+    toaster_message = Element(By.LOCATOR, ".Toastify__toast-body")
 
     col_id_name = "name"
     col_id_actions = "actions"
