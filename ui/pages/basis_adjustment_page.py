@@ -99,9 +99,6 @@ class BasisAdjustmentPage(BasePage):
         # Fill the name field
         self.name_input.fill(name)
 
-        # Fill amount field
-        self.amount_input.fill(amount)
-
         # Select the first adjustment type
         self.adjustment_type_select.click()
 

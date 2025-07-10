@@ -21,7 +21,7 @@ class TestBasisAdjustmentConfigurations:
     def test_basis_adjustment_configurations_page_loads(self):
         """Test that the basis adjustment configurations page loads successfully with correct grid headers"""
         # Constants
-        expected_headers = ["Name", "Adjustment Type", "Amount", "Tags", "Actions"]
+        expected_headers = ["Name", "Isolated", "Adjustment Type", "Excluded Sets of Books", "Tags", "Actions"]
 
         # Verify the grid headers
         self.page.verify_grid_headers(expected_headers)
@@ -47,7 +47,9 @@ class TestBasisAdjustmentConfigurations:
         self.page.wait_for_grid_reload()
 
         # Verify the new basis adjustment appears in the grid
-        assert self.page.verify_basis_adjustment_in_grid(basis_adjustment_name), f"Basis adjustment '{basis_adjustment_name}' not found in grid after creation"
+        assert self.page.verify_basis_adjustment_in_grid(
+            basis_adjustment_name
+        ), f"Basis adjustment '{basis_adjustment_name}' not found in grid after creation"
 
     def test_edit_basis_adjustment(self):
         """Test editing a basis adjustment name"""
