@@ -1,0 +1,39 @@
+/browser_generate_playwright_test
+Can you add test for edit asset class name.
+Steps:
+ - Go to the Listing page  (`authenticated_asset_class_page.open_with_id(base_settings.depr_case_id)`)
+ - Check that page is loaded and grip exists
+ - Select first row from the grid
+ - Do the hover action on "Actions" cell for selected row
+ - On hover actions icons should appear and have a pencil for edit
+ - Click on edit icon
+ - We should see ".configurations-form-wrapper" toster with edit form inside (`form_container`)
+ - <p class="title"> should have text "Edit " + text from cell of selected row and Name column  
+ - `name_input` should and have correct name in value
+ - Change the name to "112" + prev name
+ -  `action_button_save` should became active
+ - Click to save button.
+ - edit form should hide (`self.form_container.should_be_visible(should_visible=False)`)
+ - Asset classes listing grid should have row with new name 
+
+
+
+
+
+------  DELETE
+/browser_generate_playwright_test
+Can you add step to test deletion of asset class
+Steps:
+ - Go to assets class list page (`setup_authenticated_page`)
+ - Check that page is loaded (`setup_authenticated_page`)
+ - Select first row from the asset classes list grid
+ - Click on this row
+ - Get the Name of this record
+ - Click on delete icon (.trash) in Actions column
+ - Delete action should open confirmation popup (.confirmation) with header (.header) "Delete Asset Class " + Name of record
+ - This popup should have active "Delete" button.
+ - Click on "Delete" button.
+ - Check success result:
+    - Confirmation popup should disappear
+    - Should be shown toster message with text "Successfully Deleted"
+    - Deleted record should disappear from the listing grid
