@@ -2,6 +2,7 @@ import pytest
 
 from config import base_settings
 from ui.pages.asset_class_page import AssetClassPage
+from ui.pages.basis_adjustment_page import BasisAdjustmentPage
 from ui.pages.contact_page import ContactPage
 from ui.pages.login_page import LoginPage
 from ui.pages.user_page import UserPage
@@ -31,6 +32,12 @@ def asset_class_page() -> AssetClassPage:
 
 
 @pytest.fixture(scope="session")
+def basis_adjustment_page():
+    """Return a BasisAdjustmentPage instance"""
+    return BasisAdjustmentPage()
+
+
+@pytest.fixture(scope="session")
 def authenticated_asset_class_page(login_page, asset_class_page) -> AssetClassPage:
     """Return a UserPage instance with authenticated user"""
     login_page.open()
@@ -38,6 +45,16 @@ def authenticated_asset_class_page(login_page, asset_class_page) -> AssetClassPa
     login_page.should_be_redirected_from_login()
 
     return asset_class_page
+
+
+@pytest.fixture(scope="session")
+def authenticated_basis_adjustment_page(login_page, basis_adjustment_page):
+    """Return a BasisAdjustmentPage instance with authenticated user"""
+    login_page.open()
+    login_page.login(base_settings.admin_username, base_settings.admin_password)
+    login_page.should_be_redirected_from_login()
+
+    return basis_adjustment_page
 
 
 @pytest.fixture
