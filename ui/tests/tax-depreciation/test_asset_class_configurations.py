@@ -76,7 +76,6 @@ class TestAssetClassConfigurations:
         # Verify the grid contains a row with the updated name
         assert self.page.verify_asset_class_in_grid(new_name), f"Asset class '{new_name}' not found in grid after editing"
 
-
     def test_delete_asset_class(self):
         """Test deleting an asset class from the grid and verifying the operation is successful"""
         # Select the first row in the asset class grid
@@ -101,5 +100,10 @@ class TestAssetClassConfigurations:
         # Verify deletion was successful
         self.page.verify_delete_success()
 
+        # Wait for grid to reload after deletion
+        self.page.wait_for_grid_reload()
+
         # Verify the deleted asset class no longer appears in the grid
-        assert not self.page.verify_asset_class_in_grid(asset_class_name), f"Asset class '{asset_class_name}' still found in grid after deletion"
+        assert not self.page.verify_asset_class_in_grid(
+            asset_class_name
+        ), f"Asset class '{asset_class_name}' still found in grid after deletion"

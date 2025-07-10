@@ -242,3 +242,18 @@ class AssetClassPage(BasePage):
         assert "Successfully Deleted" in message_text, f"Expected toaster message to contain 'Successfully Deleted', got '{message_text}'"
 
         return self
+
+    def wait_for_grid_reload(self):
+        """Wait for the grid to reload after an operation such as deletion
+
+        Returns:
+            Self for method chaining
+        """
+        # First ensure the grid container is visible
+        self.grid_container.should_be_visible()
+
+        # Wait for the grid to stabilize after data reload
+        # This uses the grid's internal loading indicator or checks for row presence
+        self.ag_grid.wait_for_grid_loading_to_finish(self.grid_container)
+
+        return self

@@ -23,6 +23,31 @@ class AgGridHelper:
     def get_grid_container(self, parent: BaseElement | None = None) -> BaseElement:
         return Element(By.LOCATOR, self.loc_grid_container, parent=parent)
 
+    def wait_for_grid_loading_to_finish(self, grid_container: BaseElement):
+        """Wait for grid loading to finish after operations like delete
+
+        Args:
+            grid_container: The grid container element
+
+        Returns:
+            Self for method chaining
+        """
+        # Check for loading indicator disappearance (if present)
+        loading_indicator = Element(By.LOCATOR, ".ag-overlay-loading-center", parent=grid_container)
+        try:
+            loading_indicator.should_be_visible(should_visible=False, timeout=5000)
+        except Exception:
+            # If there's no loading indicator, that's fine, continue
+            pass
+
+        # Ensure rows are stable (present or absent as expected)
+        # Wait a short time for grid stabilization
+        import time
+
+        time.sleep(0.5)
+
+        return self
+
     def get_grid_header_container(self, parent: BaseElement | None = None) -> BaseElement:
         return Element(By.LOCATOR, self.loc_grid_header_container, parent=parent)
 

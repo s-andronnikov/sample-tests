@@ -8,13 +8,13 @@ Steps:
  - On hover actions icons should appear and have a pencil for edit
  - Click on edit icon
  - We should see ".configurations-form-wrapper" toster with edit form inside (`form_container`)
- - <p class="title"> should have text "Edit " + text from cell of selected row and Name column  
+ - <p class="title"> should have text "Edit " + text from cell of selected row and Name column
  - `name_input` should and have correct name in value
  - Change the name to "112" + prev name
  -  `action_button_save` should became active
  - Click to save button.
  - edit form should hide (`self.form_container.should_be_visible(should_visible=False)`)
- - Asset classes listing grid should have row with new name 
+ - Asset classes listing grid should have row with new name
 
 
 
