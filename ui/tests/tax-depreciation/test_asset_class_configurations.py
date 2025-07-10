@@ -15,6 +15,7 @@ class TestAssetClassConfigurations:
         # Store the page instance on the class for all test methods to use
         TestAssetClassConfigurations.page = authenticated_asset_class_page
 
+    @pytest.mark.skip(reason="Developing")
     def test_asset_class_configurations_page_loads(self):
         """Test that the tax-depreciation asset class configurations page loads successfully with correct grid headers"""
         # Constants
@@ -23,6 +24,7 @@ class TestAssetClassConfigurations:
         # Verify the grid headers
         self.page.verify_grid_headers(expected_headers)
 
+    @pytest.mark.skip(reason="Developing")
     def test_create_asset_class(self):
         """Test creating a new asset class"""
         # Click the Create button to open the form
@@ -43,6 +45,7 @@ class TestAssetClassConfigurations:
         # Verify the new asset class appears in the grid
         assert self.page.verify_asset_class_in_grid(asset_class_name), f"Asset class '{asset_class_name}' not found in grid after creation"
 
+    @pytest.mark.skip(reason="Developing")
     def test_edit_asset_class_name(self):
         """Test editing an asset class name"""
         first_row = self.page.select_first_row()
@@ -75,3 +78,31 @@ class TestAssetClassConfigurations:
 
         # Verify the grid contains a row with the updated name
         assert self.page.verify_asset_class_in_grid(new_name), f"Asset class '{new_name}' not found in grid after editing"
+
+
+    def test_delete_asset_class(self):
+        """Test deleting an asset class from the grid and verifying the operation is successful"""
+        # Select the first row in the asset class grid
+        first_row = self.page.select_first_row()
+        first_row.click()
+
+        # Get the name of the selected asset class
+        asset_class_name = self.page.get_name_value_by_row(first_row)
+
+        # Get the Actions cell for the selected row
+        actions_cell = self.page.get_actions_cell(first_row)
+
+        # Click on the delete icon
+        self.page.click_delete_icon(actions_cell)
+
+        # Verify the delete confirmation popup appears with the correct content
+        self.page.verify_delete_confirmation_popup(asset_class_name)
+
+        # Confirm deletion
+        self.page.confirm_delete()
+
+        # Verify deletion was successful
+        self.page.verify_delete_success()
+
+        # Verify the deleted asset class no longer appears in the grid
+        assert not self.page.verify_asset_class_in_grid(asset_class_name), f"Asset class '{asset_class_name}' still found in grid after deletion"

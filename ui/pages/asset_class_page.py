@@ -39,6 +39,14 @@ class AssetClassPage(BasePage):
     action_button_create = Element(By.LOCATOR, "button:has-text('Create')", action_buttons_wrapper)
     action_button_save = Element(By.LOCATOR, "button:has-text('Save')", action_buttons_wrapper)
 
+    # Delete confirmation elements
+    confirmation_popup = Element(By.LOCATOR, ".confirmation")
+    confirmation_header = Element(By.LOCATOR, ".header", confirmation_popup)
+    confirmation_delete_button = Element(By.LOCATOR, "button:has-text('Delete')", confirmation_popup)
+
+    # Toaster message
+    toaster_message = Element(By.LOCATOR, ".ui.toast-container .toast")
+
     col_id_name = "name"
     col_id_actions = "actions"
 
@@ -177,4 +185,60 @@ class AssetClassPage(BasePage):
         """
         self.action_button_save.should_be_enabled().click()
         self.form_container.should_be_visible(should_visible=False)
+        return self
+
+    def click_delete_icon(self, actions_cell: BaseElement):
+        """Click the delete icon that appears in the Actions cell
+
+        Args:
+            actions_cell: The Actions cell containing the delete icon
+
+        Returns:
+            Self for method chaining
+        """
+        delete_icon = Element(By.LOCATOR, ".trash", parent=actions_cell)
+        delete_icon.should_be_visible().click()
+
+        return self
+
+    def verify_delete_confirmation_popup(self, asset_class_name: str):
+        """Verify that the delete confirmation popup is displayed with the correct content
+
+        Args:
+            asset_class_name: The name of the asset class being deleted
+
+        Returns:
+            Self for method chaining
+        """
+        self.confirmation_popup.should_be_visible()
+        header_text = self.confirmation_header.get_text()
+        expected_text = f"Delete Asset Class {asset_class_name}"
+
+        assert expected_text in header_text, f"Expected confirmation header to contain '{expected_text}', got '{header_text}'"
+        self.confirmation_delete_button.should_be_enabled()
+
+        return self
+
+    def confirm_delete(self):
+        """Confirm deletion by clicking the Delete button in the confirmation popup
+
+        Returns:
+            Self for method chaining
+        """
+        self.confirmation_delete_button.click()
+        self.confirmation_popup.should_be_visible(should_visible=False)
+
+        return self
+
+    def verify_delete_success(self):
+        """Verify that the deletion was successful by checking the toaster message
+
+        Returns:
+            Self for method chaining
+        """
+        self.toaster_message.should_be_visible()
+        message_text = self.toaster_message.get_text()
+
+        assert "Successfully Deleted" in message_text, f"Expected toaster message to contain 'Successfully Deleted', got '{message_text}'"
+
         return self
