@@ -7,7 +7,7 @@ from ui.pages.login_page import LoginPage
 from ui.pages.user_page import UserPage
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def login_page() -> LoginPage:
     return LoginPage()
 
@@ -24,13 +24,13 @@ def contact_page() -> ContactPage:
     return ContactPage()
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def asset_class_page() -> AssetClassPage:
     """Return an AssetClassPage instance"""
     return AssetClassPage()
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def authenticated_asset_class_page(login_page, asset_class_page) -> AssetClassPage:
     """Return a UserPage instance with authenticated user"""
     login_page.open()

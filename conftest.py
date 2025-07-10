@@ -12,7 +12,7 @@ def start_session():
         Driver.close_browser()
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture(autouse=True, scope="session")
 def launch_workspace(start_session):
     Driver.new_workspace()
     yield

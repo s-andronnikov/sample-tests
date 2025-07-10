@@ -6,14 +6,17 @@ from ui.pages.asset_class_page import AssetClassPage
 
 @pytest.mark.ui
 class TestAssetClassConfigurations:
+    page: AssetClassPage = None
 
     @pytest.fixture(autouse=True)
-    def setup_authenticated_page(self, authenticated_asset_class_page: AssetClassPage):
+    def setup_authenticated_page(self, authenticated_asset_class_page: AssetClassPage) -> AssetClassPage:
         """Setup authenticated page once for all tests in this class"""
         authenticated_asset_class_page.open_with_id(base_settings.depr_case_id)
         assert authenticated_asset_class_page.is_page_loaded(), "Asset class configurations page failed to load"
         # Store the page instance on the class for all test methods to use
-        TestAssetClassConfigurations.page = authenticated_asset_class_page
+        self.page = authenticated_asset_class_page
+
+        return authenticated_asset_class_page
 
     def test_asset_class_configurations_page_loads(self):
         """Test that the tax-depreciation asset class configurations page loads successfully with correct grid headers"""
@@ -39,6 +42,9 @@ class TestAssetClassConfigurations:
 
         # Verify the form is no longer visible (submitted successfully)
         assert not self.page.form_container.is_visible(), "Form is still visible after submission"
+
+        # Wait for grid to reload after deletion
+        self.page.wait_for_grid_reload()
 
         # Verify the new asset class appears in the grid
         assert self.page.verify_asset_class_in_grid(asset_class_name), f"Asset class '{asset_class_name}' not found in grid after creation"
