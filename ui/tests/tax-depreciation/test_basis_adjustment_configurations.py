@@ -33,7 +33,7 @@ class TestBasisAdjustmentConfigurations:
         # Verify form is visible
         assert self.page.form_container.is_visible(), "Create form did not appear"
 
-        # Fill the form with random name, select adjustment type, amount, and tags
+        # Fill the form with random name, select adjustment type, excluded books, and tags
         basis_adjustment_name = self.page.fill_basis_adjustment_form()
         print(f"Created basis adjustment with name: {basis_adjustment_name}")
 

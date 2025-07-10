@@ -31,7 +31,10 @@ class BasisAdjustmentPage(BasePage):
     adjustment_type_select = Element(By.LOCATOR, "i", parent=adjustment_type_element)
     adjustment_type_options = Element(By.LOCATOR, "[role='option']", parent=adjustment_type_element)
 
-    amount_input = Element(By.LOCATOR, "input[name='amount']", form_container)
+    # Excluded Sets of Books field
+    excluded_books_element = Element(By.LOCATOR, "[name='booksExcluded'][role='combobox']", form_container)
+    excluded_books_select = Element(By.LOCATOR, "i", parent=excluded_books_element)
+    excluded_books_options = Element(By.LOCATOR, "[role='option']", parent=excluded_books_element)
 
     form_tags_element = Element(By.LOCATOR, ".field.dimensional-tag", form_container)
     form_tags_select = Element(By.LOCATOR, "input", parent=form_tags_element)
@@ -82,12 +85,11 @@ class BasisAdjustmentPage(BasePage):
         self.form_container.should_be_visible()
         return self
 
-    def fill_basis_adjustment_form(self, name=None, amount="100"):
+    def fill_basis_adjustment_form(self, name=None):
         """Fill the basis adjustment creation form
 
         Args:
             name: Name for the basis adjustment (random if not provided)
-            amount: Amount for the basis adjustment (defaults to '100')
 
         Returns:
             The name used for the basis adjustment
@@ -106,6 +108,18 @@ class BasisAdjustmentPage(BasePage):
         type_options = self.adjustment_type_options().all()
         if type_options:
             type_options[0].click()
+
+        self.form_container.click()
+
+        # # Select the first excluded sets of books if available
+        self.excluded_books_select.click()
+        #
+        # # Wait for options to be visible and select the first non-empty option
+        books_options = self.excluded_books_options().all()
+        if books_options:
+            books_options[0].click()
+
+        self.form_container.click()
 
         # Select the first tag
         self.form_tags_select.click()
