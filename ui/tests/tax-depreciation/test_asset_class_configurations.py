@@ -4,12 +4,6 @@ from config import base_settings
 from ui.pages.asset_class_page import AssetClassPage
 
 
-@pytest.fixture
-def asset_class_page() -> AssetClassPage:
-    """Return a AssetClassPage instance"""
-    return AssetClassPage()
-
-
 @pytest.mark.ui
 class TestAssetClassConfigurations:
     def test_asset_class_configurations_page_loads(self, authenticated_asset_class_page: AssetClassPage):
