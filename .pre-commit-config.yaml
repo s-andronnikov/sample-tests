@@ -8,8 +8,11 @@ repos:
     rev: v5.0.0
     hooks:
       - id: fix-byte-order-marker
+        files: \.py$
       - id: trailing-whitespace
+        files: \.py$
       - id: end-of-file-fixer
+        files: \.py$
   - repo: https://github.com/psf/black
     rev: 25.1.0
     hooks:
