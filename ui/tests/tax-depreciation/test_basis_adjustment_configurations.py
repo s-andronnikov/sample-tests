@@ -72,7 +72,7 @@ class TestBasisAdjustmentConfigurations:
         assert f"Edit {original_name}" in form_title_text, f"Expected form title to contain 'Edit {original_name}', got '{form_title_text}'"
 
         # Modify the name by adding 'Updated' prefix
-        new_name = f"Updated {original_name}"
+        new_name = f"-Updated {original_name}"
         self.page.edit_basis_adjustment_name(new_name)
 
         # Save the changes
