@@ -69,6 +69,35 @@ class BaseElement:
     def all(self) -> list[Locator]:
         return self._get_locator().all()
 
+    def get_attribute(self, attribute_name: str) -> str:
+        """Get the value of an attribute from the element
+
+        Args:
+            attribute_name: Name of the attribute to retrieve
+
+        Returns:
+            The attribute value as a string, or empty string if not found
+        """
+        return self._get_locator().get_attribute(attribute_name) or ""
+
+    def get_class_list(self) -> list[str]:
+        """Get the list of CSS classes applied to the element
+
+        Returns:
+            List of CSS class names
+        """
+        class_attr = self.get_attribute("class")
+        return class_attr.split() if class_attr else []
+
+    def is_enabled(self) -> bool:
+        """Check if the element is enabled
+
+        Returns:
+            True if the element is enabled, False otherwise
+        """
+        locator = self._get_locator()
+        return locator.is_enabled() and "disabled" not in self.get_class_list()
+
     def should_be_visible(self, should_visible: bool = True, timeout: int = OP_COMMON_TIMEOUT) -> "BaseElement":
         locator = self._get_locator()
         expect(locator).to_be_visible(visible=should_visible, timeout=timeout)

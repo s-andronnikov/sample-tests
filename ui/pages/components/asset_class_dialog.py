@@ -1,6 +1,6 @@
 from faker import Faker
 
-from framework.ui.element import BaseElement, By, Element
+from framework.ui.element import BaseElement, By
 
 fake = Faker()
 
