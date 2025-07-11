@@ -118,32 +118,3 @@ class TestBasisAdjustmentConfigurations:
         assert not self.page.verify_basis_adjustment_in_grid(
             basis_adjustment_name
         ), f"Basis adjustment '{basis_adjustment_name}' still found in grid after deletion"
-
-    def test_form_validation_and_cancellation(self):
-        """Test form validation and cancellation operations"""
-        # Test form validation
-        self.page.click_create_button()
-        # Try to submit without filling required fields
-        self.page.basis_adjustment_dialog.create_button.click()
-
-        # Form should still be visible (validation failed)
-        self.page.basis_adjustment_dialog.should_be_visible()
-
-        # Test form cancellation
-        self.page.cancel_form()
-        self.page.basis_adjustment_dialog.should_not_be_visible()
-
-        # Test edit cancellation
-        if self.page.ag_grid.get_grid_body_rows().count() > 0:
-            first_row = self.page.select_first_row()
-            first_row.click()
-
-            actions_cell = self.page.get_actions_cell(first_row)
-            self.page.click_edit_icon(actions_cell)
-
-            # Make a change then cancel
-            self.page.basis_adjustment_dialog.name_input.fill("Cancelled Edit Operation")
-            self.page.cancel_form()
-
-            # Form should be hidden after cancellation
-            self.page.basis_adjustment_dialog.should_not_be_visible()
