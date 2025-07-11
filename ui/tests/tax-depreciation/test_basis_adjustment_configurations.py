@@ -35,7 +35,6 @@ class TestBasisAdjustmentConfigurations:
 
         # Fill the form with random name, select adjustment type, excluded books, and tags
         basis_adjustment_name = self.page.fill_basis_adjustment_form()
-        print(f"Created basis adjustment with name: {basis_adjustment_name}")
 
         # Submit the form
         self.page.submit_form()
@@ -118,3 +117,48 @@ class TestBasisAdjustmentConfigurations:
         assert not self.page.verify_basis_adjustment_in_grid(
             basis_adjustment_name
         ), f"Basis adjustment '{basis_adjustment_name}' still found in grid after deletion"
+
+    def test_basis_adjustment_name_uniqueness_validation(self):
+        """Test validation for unique basis adjustment names"""
+        # Get an existing basis adjustment name from the grid
+
+        print(">>1>", self.page.ag_grid.get_grid_body_rows().all())
+        print(">>2>", len(self.page.ag_grid.get_grid_body_rows().all()))
+
+        if len(self.page.ag_grid.get_grid_body_rows().all()) == 0:
+            # Create a new basis adjustment if grid is empty
+            self.page.click_create_button()
+            basis_adjustment_name = self.page.fill_basis_adjustment_form()
+            self.page.submit_form()
+            self.page.wait_for_grid_reload()
+        else:
+            # Get the name of the first basis adjustment in the grid
+            first_row = self.page.select_first_row()
+            basis_adjustment_name = self.page.get_name_value_by_row(first_row)
+
+        # Try to create a new basis adjustment with the same name
+        self.page.click_create_button()
+        self.page.basis_adjustment_dialog.name_input.fill(basis_adjustment_name)
+
+        # Fill the rest of the required fields
+        self.page.basis_adjustment_dialog.adjustment_type_select.click()
+        type_options = self.page.basis_adjustment_dialog.adjustment_type_options.all()
+        if type_options:
+            type_options[0].click()
+
+        self.page.basis_adjustment_dialog.form_container.click()
+
+        # Verify validation error is shown after filling in duplicate name
+        assert self.page.basis_adjustment_dialog.has_validation_error(), "No validation error shown for duplicate name"
+
+        # Verify error message
+        error_message = self.page.basis_adjustment_dialog.get_error_message()
+        assert "already exists" in error_message or "must be unique" in error_message, f"Unexpected error message: {error_message}"
+
+        # Verify create button is disabled
+        assert (
+            not self.page.basis_adjustment_dialog.is_create_button_enabled()
+        ), "Create button should be disabled when validation error exists"
+
+        # Cancel the form
+        self.page.cancel_form()

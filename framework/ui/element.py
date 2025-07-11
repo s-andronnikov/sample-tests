@@ -69,6 +69,14 @@ class BaseElement:
     def all(self) -> list[Locator]:
         return self._get_locator().all()
 
+    def count(self) -> int:
+        """Get the number of elements matching this locator
+
+        Returns:
+            The count of matching elements
+        """
+        return self._get_locator().count()
+
     def get_attribute(self, attribute_name: str) -> str:
         """Get the value of an attribute from the element
 
