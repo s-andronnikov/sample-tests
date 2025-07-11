@@ -4,6 +4,7 @@ from framework.ui.element import By, Element, BaseElement
 from ui.helpers.ag_grid_helper import AgGridHelper
 from ui.helpers.url_helper import UrlHelper
 from ui.pages.base_page import BasePage
+from ui.pages.components.basis_adjustment_dialog import BasisAdjustmentDialog
 
 fake = Faker()
 
@@ -20,30 +21,6 @@ class BasisAdjustmentPage(BasePage):
 
     # Create basis adjustment elements
     create_button = Element(By.LOCATOR, "button:has-text('Create')")
-    form_wrapper = Element(By.LOCATOR, "[class='configurations-form-wrapper']")
-
-    form_container = Element(By.LOCATOR, "form", form_wrapper)
-    name_input = Element(By.LOCATOR, "input[name='name']")
-    form_title = Element(By.LOCATOR, "p.title", form_wrapper)
-
-    # Form fields specific to basis adjustment
-    adjustment_type_element = Element(By.LOCATOR, "[name='adjustmentType'][role='combobox']", form_container)
-    adjustment_type_select = Element(By.LOCATOR, "i", parent=adjustment_type_element)
-    adjustment_type_options = Element(By.LOCATOR, "[role='option']", parent=adjustment_type_element)
-
-    # Excluded Sets of Books field
-    excluded_books_element = Element(By.LOCATOR, "[name='booksExcluded'][role='combobox']", form_container)
-    excluded_books_select = Element(By.LOCATOR, "i", parent=excluded_books_element)
-    excluded_books_options = Element(By.LOCATOR, "[role='option']", parent=excluded_books_element)
-
-    form_tags_element = Element(By.LOCATOR, ".field.dimensional-tag", form_container)
-    form_tags_select = Element(By.LOCATOR, "input", parent=form_tags_element)
-    form_tags_options = Element(By.LOCATOR, "[class='result']", parent=form_tags_element)
-
-    action_buttons_wrapper = Element(By.LOCATOR, "[class='action-buttons']", form_wrapper)
-    action_button_cancel = Element(By.LOCATOR, "button:has-text('Cancel')", action_buttons_wrapper)
-    action_button_create = Element(By.LOCATOR, "button:has-text('Create')", action_buttons_wrapper)
-    action_button_save = Element(By.LOCATOR, "button:has-text('Save')", action_buttons_wrapper)
 
     # Delete confirmation elements
     confirmation_popup = Element(By.LOCATOR, ".confirmation")
@@ -59,6 +36,7 @@ class BasisAdjustmentPage(BasePage):
     def __init__(self):
         super().__init__()
         self.ag_grid = AgGridHelper()
+        self.basis_adjustment_dialog = BasisAdjustmentDialog()
 
     def open_with_id(self, depr_case_id: str):
         """Open the basis adjustment page with the given depreciation ID"""
@@ -82,7 +60,7 @@ class BasisAdjustmentPage(BasePage):
     def click_create_button(self):
         """Click the Create button to open the basis adjustment creation form"""
         self.create_button.click()
-        self.form_container.should_be_visible()
+        self.basis_adjustment_dialog.should_be_visible()
         return self
 
     def fill_basis_adjustment_form(self, name=None):
@@ -94,55 +72,20 @@ class BasisAdjustmentPage(BasePage):
         Returns:
             The name used for the basis adjustment
         """
-        # Generate a random name if not provided
-        if name is None:
-            name = f"111 Test Basis Adjustment {fake.word()} {fake.random_int(100, 999)}"
-
-        # Fill the name field
-        self.name_input.fill(name)
-
-        # Select the first adjustment type
-        self.adjustment_type_select.click()
-
-        # Wait for options to be visible and select the first non-empty option
-        type_options = self.adjustment_type_options().all()
-        if type_options:
-            type_options[0].click()
-
-        self.form_container.click()
-
-        # # Select the first excluded sets of books if available
-        self.excluded_books_select.click()
-        #
-        # # Wait for options to be visible and select the first non-empty option
-        books_options = self.excluded_books_options().all()
-        if books_options:
-            books_options[0].click()
-
-        self.form_container.click()
-
-        # Select the first tag
-        self.form_tags_select.click()
-
-        # Get all tag options and select the first one if available
-        tag_options = self.form_tags_options.all()
-        if tag_options:
-            tag_options[0].click()
-
-        return name
+        return self.basis_adjustment_dialog.fill_form(name)
 
     def submit_form(self):
         """Submit the basis adjustment form"""
-        self.action_button_create.should_be_enabled().click()
+        self.basis_adjustment_dialog.create()
 
-        # Wait for the form to disappear or for the grid to refresh
-        self.form_container.should_be_visible(should_visible=False)
+        # Wait for the form to disappear
+        self.basis_adjustment_dialog.should_not_be_visible()
         return self
 
     def cancel_form(self):
         """Cancel the form without submitting"""
-        self.action_button_cancel.click()
-        self.form_container.should_be_visible(should_visible=False)
+        self.basis_adjustment_dialog.cancel()
+        self.basis_adjustment_dialog.should_not_be_visible()
         return self
 
     def verify_basis_adjustment_in_grid(self, name):
@@ -184,6 +127,9 @@ class BasisAdjustmentPage(BasePage):
         """
         edit_icon = Element(By.LOCATOR, ".pencil", parent=actions_cell)
         edit_icon.should_be_visible().click()
+
+        # Verify dialog appears
+        self.basis_adjustment_dialog.should_be_visible()
         return self
 
     def edit_basis_adjustment_name(self, new_name):
@@ -195,9 +141,9 @@ class BasisAdjustmentPage(BasePage):
         Returns:
             Self for method chaining
         """
-        self.name_input.should_be_visible()
-        current_name = self.name_input._get_locator().input_value()
-        self.name_input.fill(new_name)
+        self.basis_adjustment_dialog.name_input.should_be_visible()
+        current_name = self.basis_adjustment_dialog.name_input._get_locator().input_value()
+        self.basis_adjustment_dialog.name_input.fill(new_name)
         return self, current_name
 
     def save_edited_form(self):
@@ -206,8 +152,8 @@ class BasisAdjustmentPage(BasePage):
         Returns:
             Self for method chaining
         """
-        self.action_button_save.should_be_enabled().click()
-        self.form_container.should_be_visible(should_visible=False)
+        self.basis_adjustment_dialog.save()
+        self.basis_adjustment_dialog.should_not_be_visible()
         return self
 
     def click_delete_icon(self, actions_cell: BaseElement):

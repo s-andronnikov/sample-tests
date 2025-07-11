@@ -31,7 +31,7 @@ class TestBasisAdjustmentConfigurations:
         # Click the Create button to open the form
         self.page.click_create_button()
         # Verify form is visible
-        assert self.page.form_container.is_visible(), "Create form did not appear"
+        self.page.basis_adjustment_dialog.should_be_visible()
 
         # Fill the form with random name, select adjustment type, excluded books, and tags
         basis_adjustment_name = self.page.fill_basis_adjustment_form()
@@ -41,7 +41,7 @@ class TestBasisAdjustmentConfigurations:
         self.page.submit_form()
 
         # Verify the form is no longer visible (submitted successfully)
-        assert not self.page.form_container.is_visible(), "Form is still visible after submission"
+        self.page.basis_adjustment_dialog.should_not_be_visible()
 
         # Wait for grid to reload after creation
         self.page.wait_for_grid_reload()
@@ -65,10 +65,10 @@ class TestBasisAdjustmentConfigurations:
         self.page.click_edit_icon(actions_cell)
 
         # Verify edit form appears with the correct title
-        self.page.form_container.should_be_visible()
+        self.page.basis_adjustment_dialog.should_be_visible()
 
         # Check that the form title contains the original name
-        form_title_text = self.page.form_title.get_text()
+        form_title_text = self.page.basis_adjustment_dialog.form_title.get_text()
         assert f"Edit {original_name}" in form_title_text, f"Expected form title to contain 'Edit {original_name}', got '{form_title_text}'"
 
         # Modify the name by adding 'Updated' prefix
@@ -79,7 +79,7 @@ class TestBasisAdjustmentConfigurations:
         self.page.save_edited_form()
 
         # Verify the edit form disappears
-        assert not self.page.form_container.is_visible(), "Edit form is still visible after submission"
+        self.page.basis_adjustment_dialog.should_not_be_visible()
 
         # Wait for grid reload
         self.page.wait_for_grid_reload()
@@ -124,14 +124,14 @@ class TestBasisAdjustmentConfigurations:
         # Test form validation
         self.page.click_create_button()
         # Try to submit without filling required fields
-        self.page.action_button_create.click()
+        self.page.basis_adjustment_dialog.create_button.click()
 
         # Form should still be visible (validation failed)
-        assert self.page.form_container.is_visible(), "Form should remain visible when validation fails"
+        self.page.basis_adjustment_dialog.should_be_visible()
 
         # Test form cancellation
         self.page.cancel_form()
-        assert not self.page.form_container.is_visible(), "Form should be hidden after cancellation"
+        self.page.basis_adjustment_dialog.should_not_be_visible()
 
         # Test edit cancellation
         if self.page.ag_grid.get_grid_body_rows().count() > 0:
@@ -142,8 +142,8 @@ class TestBasisAdjustmentConfigurations:
             self.page.click_edit_icon(actions_cell)
 
             # Make a change then cancel
-            self.page.name_input.fill("Cancelled Edit Operation")
+            self.page.basis_adjustment_dialog.name_input.fill("Cancelled Edit Operation")
             self.page.cancel_form()
 
             # Form should be hidden after cancellation
-            assert not self.page.form_container.is_visible(), "Edit form should be hidden after cancellation"
+            self.page.basis_adjustment_dialog.should_not_be_visible()
