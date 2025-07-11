@@ -26,7 +26,7 @@ class TestAssetClassConfigurations:
         # Verify the grid headers
         self.page.verify_grid_headers(expected_headers)
 
-    @pytest.mark.skip()
+    # @pytest.mark.skip()
     def test_create_asset_class(self):
         """Test creating a new asset class"""
         # Click the Create button to open the form
@@ -50,7 +50,7 @@ class TestAssetClassConfigurations:
         # Verify the new asset class appears in the grid
         assert self.page.verify_asset_class_in_grid(asset_class_name), f"Asset class '{asset_class_name}' not found in grid after creation"
 
-    @pytest.mark.skip()
+    # @pytest.mark.skip()
     def test_asset_class_name_uniqueness_validation(self):
         """Test that the asset class creation form validates uniqueness of names"""
         # Get name from first record on the list grid
@@ -81,7 +81,7 @@ class TestAssetClassConfigurations:
         # Clean up - cancel the form
         self.page.cancel_form()
 
-    @pytest.mark.skip()
+    # @pytest.mark.skip()
     def test_edit_asset_class_name(self):
         """Test editing an asset class name"""
         first_row = self.page.select_first_row()
@@ -115,7 +115,7 @@ class TestAssetClassConfigurations:
         # Verify the grid contains a row with the updated name
         assert self.page.verify_asset_class_in_grid(new_name), f"Asset class '{new_name}' not found in grid after editing"
 
-    @pytest.mark.skip()
+    # @pytest.mark.skip()
     def test_delete_asset_class(self):
         """Test deleting an asset class from the grid and verifying the operation is successful"""
         # Select the first row in the asset class grid

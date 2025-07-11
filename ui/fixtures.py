@@ -1,6 +1,5 @@
 import pytest
 
-from config import base_settings
 from ui.pages.asset_class_page import AssetClassPage
 from ui.pages.basis_adjustment_page import BasisAdjustmentPage
 from ui.pages.contact_page import ContactPage
@@ -26,16 +25,27 @@ def contact_page() -> ContactPage:
     return ContactPage()
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="class")
 def asset_class_page() -> AssetClassPage:
     """Return an AssetClassPage instance"""
     return AssetClassPage()
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="class")
 def basis_adjustment_page():
     """Return a BasisAdjustmentPage instance"""
     return BasisAdjustmentPage()
+
+
+@pytest.fixture
+def authenticated_user_page(login_page, user_page) -> UserPage:
+    """Return a UserPage instance with authenticated admin user"""
+    # Authenticate as admin
+    login_page.open()
+    login_page.login_as(UserType.ADMIN, check_already_logged_in=True)
+    # Open the user page
+    user_page.open()
+    return user_page
 
 
 @pytest.fixture(scope="class")
@@ -44,7 +54,7 @@ def authenticated_asset_class_page(login_page, asset_class_page) -> AssetClassPa
     # Open login page and authenticate as admin
     login_page.open()
     login_page.login_as(UserType.ADMIN, check_already_logged_in=True)
-
+    login_page.should_be_redirected_from_login()
     return asset_class_page
 
 
@@ -54,20 +64,8 @@ def authenticated_basis_adjustment_page(login_page, basis_adjustment_page):
     # Open login page and authenticate as admin
     login_page.open()
     login_page.login_as(UserType.ADMIN, check_already_logged_in=True)
-
+    login_page.should_be_redirected_from_login()
     return basis_adjustment_page
-
-
-@pytest.fixture
-def authenticated_user_page(login_page, user_page) -> UserPage:
-    """Return a UserPage instance with authenticated admin user"""
-    # Authenticate as admin
-    login_page.open()
-    login_page.login_as(UserType.ADMIN, check_already_logged_in=True)
-
-    # Open the user page
-    user_page.open()
-    return user_page
 
 
 @pytest.fixture

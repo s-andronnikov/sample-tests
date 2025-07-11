@@ -114,6 +114,9 @@ class BaseElement:
     def is_visible(self) -> bool:
         return self._get_locator().is_visible()
 
+    def is_exists(self) -> bool:
+        return self._get_locator().count() > 0
+
     def click(self, timeout: int = OP_COMMON_TIMEOUT, force: bool = False) -> "BaseElement":
         self._get_locator().click(timeout=timeout, force=force)
         return self

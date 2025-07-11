@@ -1,5 +1,4 @@
 from enum import Enum, auto
-from typing import Optional
 
 from common.decorators import ui_url
 from common.routes import UIRoutes
@@ -10,6 +9,7 @@ from ui.pages.base_page import BasePage
 
 class UserType(Enum):
     """Available user types for login"""
+
     ADMIN = auto()
     USER = auto()
     READONLY = auto()
@@ -20,9 +20,8 @@ class LoginPage(BasePage):
     el_login = Element(By.LOCATOR, "input[name='emailAddress']")
     el_password = Element(By.LOCATOR, "input[name='password']")
     el_login_btn = Element(By.LOCATOR, "button[id='st-loginButton']")
-    el_user_menu = Element(By.LOCATOR, "[role='listbox']:has(div:has-text('Settings'))") # Settings dropdown menu
+    el_user_menu = Element(By.LOCATOR, "[role='listbox']:has(div:has-text('Settings'))")  # Settings dropdown menu
     el_logout = Element(By.LOCATOR, "div[name='logout'][role='option']", el_user_menu)
-
 
     error_toast = Element(By.LOCATOR, ".Toastify__toast--error")
 
@@ -38,7 +37,7 @@ class LoginPage(BasePage):
             Self for method chaining
         """
         if check_already_logged_in and self.is_user_logged_in():
-            print(f"User is already logged in, skipping login")
+            print("User is already logged in, skipping login")
             return self
 
         # If a user is logged in but we explicitly want to login as a different user
@@ -50,7 +49,7 @@ class LoginPage(BasePage):
         self.el_login_btn.click()
 
         # Wait for redirect to complete
-        self.should_be_redirected_from_login()
+        # self.should_be_redirected_from_login()
         return self
 
     def login_as(self, user_type: UserType, check_already_logged_in: bool = True):
@@ -66,9 +65,8 @@ class LoginPage(BasePage):
         credentials = {
             UserType.ADMIN: (base_settings.admin_username, base_settings.admin_password),
             UserType.USER: (base_settings.user_username, base_settings.user_password),
-            UserType.READONLY: (base_settings.readonly_username, base_settings.readonly_password)
+            UserType.READONLY: (base_settings.readonly_username, base_settings.readonly_password),
         }
-
         username, password = credentials[user_type]
         return self.login(username, password, check_already_logged_in)
 
@@ -78,11 +76,17 @@ class LoginPage(BasePage):
         Returns:
             True if a user is logged in, False otherwise
         """
-        try:
-            # Try to find the logout option (only visible when logged in)
-            return self.get_page().query_selector("div[name='logout'][role='option']") is not None
-        except Exception:
-            return False
+        return self.el_user_menu.is_visible()
+
+    def open_user_menu(self):
+        """Open the user menu dropdown to expose logout option
+
+        Returns:
+            Self for method chaining
+        """
+        self.el_user_menu.click()
+
+        return self
 
     def logout(self):
         """Logout the current user if logged in
@@ -91,8 +95,10 @@ class LoginPage(BasePage):
             Self for method chaining
         """
         if self.is_user_logged_in():
-            # Open user menu then click logout
-            self.el_user_menu.click()
+            # Open the user menu to expose the logout option
+            self.open_user_menu()
+
+            # Click on logout option
             self.el_logout.click()
 
             # Wait for logout to complete and login page to appear
@@ -106,10 +112,15 @@ class LoginPage(BasePage):
         assert message_span.should_be_visible(), f"Error toast with message '{expected_message}' not found"
 
     def should_be_redirected_from_login(self):
-        page = self.get_page()
+        """Verify that login redirection was successful by checking for the logout option
 
-        page.wait_for_load_state("networkidle")
+        Raises:
+            AssertionError: If the logout element is not found after redirection
 
-        assert page.wait_for_selector(
-            "div[name='logout']", state="attached", timeout=3000
-        ), "Logout element should be visible after redirection"
+        Returns:
+            Self for method chaining
+        """
+        # Wait for page load to complete
+        assert self.el_user_menu.should_be_visible(timeout=5000), "User is not logged in - logout element not found after redirection"
+
+        return self
