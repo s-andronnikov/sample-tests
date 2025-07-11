@@ -31,7 +31,7 @@ class TestAssetClassConfigurations:
         # Click the Create button to open the form
         self.page.click_create_button()
         # Verify form is visible
-        assert self.page.form_container.is_visible(), "Create form did not appear"
+        assert self.page.asset_class_dialog.should_be_visible(), "Create form did not appear"
 
         # Fill the form with random name, select first depreciation profile, and first two tags
         asset_class_name = self.page.fill_asset_class_form()
@@ -41,13 +41,43 @@ class TestAssetClassConfigurations:
         self.page.submit_form()
 
         # Verify the form is no longer visible (submitted successfully)
-        assert not self.page.form_container.is_visible(), "Form is still visible after submission"
+        self.page.asset_class_dialog.should_not_be_visible()
 
         # Wait for grid to reload after deletion
         self.page.wait_for_grid_reload()
 
         # Verify the new asset class appears in the grid
         assert self.page.verify_asset_class_in_grid(asset_class_name), f"Asset class '{asset_class_name}' not found in grid after creation"
+
+    def test_asset_class_name_uniqueness_validation(self):
+        """Test that the asset class creation form validates uniqueness of names"""
+        # Get name from first record on the list grid
+        first_row = self.page.select_first_row()
+        existing_name = self.page.get_name_value_by_row(first_row)
+
+        # Click the Create button to open the form
+        self.page.click_create_button()
+        assert self.page.asset_class_dialog.should_be_visible(), "Create form did not appear"
+
+        # Fill the Name input on form with existing record name
+        self.page.asset_class_dialog.name_input.fill(existing_name)
+
+        # Click on form to trigger change event
+        self.page.asset_class_dialog.form_container.click()
+
+        # Verify validation error appears
+        # 1. div.input should have class - error
+        assert self.page.asset_class_dialog.has_validation_error(), "Name input does not have error class"
+
+        # 2. ".labeled-error" should appear with text "Name must be unique."
+        error_message_text = self.page.asset_class_dialog.get_error_message()
+        assert "Name must be unique." in error_message_text, f"Expected error message 'Name must be unique.' but got '{error_message_text}'"
+
+        # 3. Button "Create" should become disabled
+        assert not self.page.asset_class_dialog.is_create_button_enabled(), "Create button should be disabled when validation error exists"
+
+        # Clean up - cancel the form
+        self.page.cancel_form()
 
     def test_edit_asset_class_name(self):
         """Test editing an asset class name"""
@@ -63,10 +93,10 @@ class TestAssetClassConfigurations:
         self.page.click_edit_icon(actions_cell)
 
         # Verify edit form appears with the correct title
-        self.page.form_container.should_be_visible()
+        self.page.asset_class_dialog.should_be_visible()
 
         # Check that the form title contains the original name
-        form_title_text = self.page.form_title.get_text()
+        form_title_text = self.page.asset_class_dialog.form_title.get_text()
         assert f"Edit {original_name}" in form_title_text, f"Expected form title to contain 'Edit {original_name}', got '{form_title_text}'"
 
         # Modify the name by adding '112' prefix
@@ -77,7 +107,7 @@ class TestAssetClassConfigurations:
         self.page.save_edited_form()
 
         # Verify the edit form disappears
-        assert not self.page.form_container.is_visible(), "Edit form is still visible after submission"
+        self.page.asset_class_dialog.should_not_be_visible()
 
         # Verify the grid contains a row with the updated name
         assert self.page.verify_asset_class_in_grid(new_name), f"Asset class '{new_name}' not found in grid after editing"

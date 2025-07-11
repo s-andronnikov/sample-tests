@@ -4,6 +4,7 @@ from framework.ui.element import By, Element, BaseElement
 from ui.helpers.ag_grid_helper import AgGridHelper
 from ui.helpers.url_helper import UrlHelper
 from ui.pages.base_page import BasePage
+from ui.pages.components.asset_class_dialog import AssetClassDialog
 
 fake = Faker()
 
@@ -20,24 +21,6 @@ class AssetClassPage(BasePage):
 
     # Create asset class elements
     create_button = Element(By.LOCATOR, "button:has-text('Create')")
-    form_wrapper = Element(By.LOCATOR, "[class='configurations-form-wrapper']")
-
-    form_container = Element(By.LOCATOR, "form", form_wrapper)
-    name_input = Element(By.LOCATOR, "input[name='name']")
-    form_title = Element(By.LOCATOR, "p.title", form_wrapper)
-
-    depreciation_profile_element = Element(By.LOCATOR, "[name='deprProfileId'][role='combobox']", form_container)
-    depreciation_profile_select = Element(By.LOCATOR, "i", parent=depreciation_profile_element)
-    depreciation_profile_options = Element(By.LOCATOR, "[role='option']", parent=depreciation_profile_element)
-
-    form_tags_element = Element(By.LOCATOR, ".field.dimensional-tag", form_container)
-    form_tags_select = Element(By.LOCATOR, "input", parent=form_tags_element)
-    form_tags_options = Element(By.LOCATOR, "[class='result']", parent=form_tags_element)
-
-    action_buttons_wrapper = Element(By.LOCATOR, "[class='action-buttons']", form_wrapper)
-    action_button_cancel = Element(By.LOCATOR, "button:has-text('Cancel')", action_buttons_wrapper)
-    action_button_create = Element(By.LOCATOR, "button:has-text('Create')", action_buttons_wrapper)
-    action_button_save = Element(By.LOCATOR, "button:has-text('Save')", action_buttons_wrapper)
 
     # Delete confirmation elements
     confirmation_popup = Element(By.LOCATOR, ".confirmation")
@@ -53,6 +36,7 @@ class AssetClassPage(BasePage):
     def __init__(self):
         super().__init__()
         self.ag_grid = AgGridHelper()
+        self.asset_class_dialog = AssetClassDialog()
 
     def open_with_id(self, depr_case_id: str):
         """Open the asset class page with the given depreciation ID"""
@@ -76,7 +60,7 @@ class AssetClassPage(BasePage):
     def click_create_button(self):
         """Click the Create button to open the asset class creation form"""
         self.create_button.click()
-        self.form_container.should_be_visible()
+        self.asset_class_dialog.should_be_visible()
         return self
 
     def fill_asset_class_form(self, name=None):
@@ -88,38 +72,14 @@ class AssetClassPage(BasePage):
         Returns:
             The name used for the asset class
         """
-        # Generate a random name if not provided
-        if name is None:
-            name = f"111 Test Asset Class {fake.word()} {fake.random_int(100, 999)}"
-
-        # Fill the name field
-        self.name_input.fill(name)
-
-        # Select the first depreciation profile
-        # First click on the dropdown to open it
-        self.depreciation_profile_select.click()
-
-        # Wait for options to be visible and select the first non-empty option
-        profile_options = self.depreciation_profile_options().all()
-        if profile_options:
-            profile_options[0].click()
-
-        # # Select the first and second tags
-        self.form_tags_select.click()
-
-        # Get all tag options and select the first two if available
-        tag_options = self.form_tags_options.all()
-        if tag_options:
-            tag_options[0].click()
-
-        return name
+        return self.asset_class_dialog.fill_form(name)
 
     def submit_form(self):
         """Submit the asset class form"""
-        self.action_button_create.should_be_enabled().click()
+        self.asset_class_dialog.create()
 
-        # Wait for the form to disappear or for the grid to refresh
-        self.form_container.should_be_visible(should_visible=False)
+        # Wait for the form to disappear
+        self.asset_class_dialog.should_not_be_visible()
         return self
 
     def verify_asset_class_in_grid(self, name):
@@ -161,6 +121,9 @@ class AssetClassPage(BasePage):
         edit_icon = Element(By.LOCATOR, ".pencil", parent=actions_cell)
         edit_icon.should_be_visible().click()
 
+        # Verify dialog appears
+        self.asset_class_dialog.should_be_visible()
+
         return self
 
     def edit_asset_class_name(self, new_name):
@@ -172,9 +135,9 @@ class AssetClassPage(BasePage):
         Returns:
             Self for method chaining
         """
-        self.name_input.should_be_visible()
-        current_name = self.name_input._get_locator().input_value()
-        self.name_input.fill(new_name)
+        self.asset_class_dialog.name_input.should_be_visible()
+        current_name = self.asset_class_dialog.name_input._get_locator().input_value()
+        self.asset_class_dialog.name_input.fill(new_name)
         return self, current_name
 
     def save_edited_form(self):
@@ -183,8 +146,8 @@ class AssetClassPage(BasePage):
         Returns:
             Self for method chaining
         """
-        self.action_button_save.should_be_enabled().click()
-        self.form_container.should_be_visible(should_visible=False)
+        self.asset_class_dialog.save()
+        self.asset_class_dialog.should_not_be_visible()
         return self
 
     def click_delete_icon(self, actions_cell: BaseElement):
@@ -256,4 +219,14 @@ class AssetClassPage(BasePage):
         # This uses the grid's internal loading indicator or checks for row presence
         self.ag_grid.wait_for_grid_loading_to_finish(self.grid_container)
 
+        return self
+
+    def cancel_form(self):
+        """Cancel the asset class form by clicking the Cancel button
+
+        Returns:
+            Self for method chaining
+        """
+        self.asset_class_dialog.cancel()
+        self.asset_class_dialog.should_not_be_visible()
         return self
