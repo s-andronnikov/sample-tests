@@ -86,12 +86,29 @@ poetry run pytest
 
 # Run UI tests
 poetry run pytest ui/
+# or using marker
+poetry run pytest -m ui
 
 # Run API tests
 poetry run pytest api/
+# or using marker
+poetry run pytest -m api
 
 # Run with specific markers
 poetry run pytest -m smoke
+```
+
+You can also use the Makefile commands for running tests:
+
+```bash
+# Run all tests
+make test
+
+# Run UI tests only
+make test-ui
+
+# Run API tests only
+make test-api
 ```
 
 ## Makefile Commands
@@ -113,6 +130,12 @@ make clean
 
 # Run all tests
 make test
+
+# Run only UI tests
+make test-ui
+
+# Run only API tests
+make test-api
 
 # Install all dependencies including dev tools
 make install

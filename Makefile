@@ -1,4 +1,4 @@
-.PHONY: help lint format clean test install update
+.PHONY: help lint format clean test test-ui test-api install update
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
@@ -20,8 +20,14 @@ clean: ## Clean up Python artifacts
 	find . -type d -name "*.egg" -exec rm -rf {} +
 	rm -rf build/ dist/
 
-test: ## Run tests
+test: ## Run all tests
 	poetry run pytest
+
+test-ui: ## Run UI tests only
+	poetry run pytest -m ui
+
+test-api: ## Run API tests only
+	poetry run pytest -m api
 
 install: ## Install dependencies with Poetry
 	pip install --upgrade pip
