@@ -6,6 +6,7 @@ from ui.pages.basis_adjustment_page import BasisAdjustmentPage
 from ui.pages.contact_page import ContactPage
 from ui.pages.login_page import LoginPage
 from ui.pages.user_page import UserPage
+from ui.pages.login_page import UserType
 
 
 @pytest.fixture(scope="session")
@@ -37,36 +38,45 @@ def basis_adjustment_page():
     return BasisAdjustmentPage()
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="class")
 def authenticated_asset_class_page(login_page, asset_class_page) -> AssetClassPage:
-    """Return a UserPage instance with authenticated user"""
+    """Return an AssetClassPage instance with authenticated admin user"""
+    # Open login page and authenticate as admin
     login_page.open()
-    login_page.login(base_settings.admin_username, base_settings.admin_password)
-    login_page.should_be_redirected_from_login()
+    login_page.login_as(UserType.ADMIN, check_already_logged_in=True)
 
     return asset_class_page
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="class")
 def authenticated_basis_adjustment_page(login_page, basis_adjustment_page):
-    """Return a BasisAdjustmentPage instance with authenticated user"""
+    """Return a BasisAdjustmentPage instance with authenticated admin user"""
+    # Open login page and authenticate as admin
     login_page.open()
-    login_page.login(base_settings.admin_username, base_settings.admin_password)
-    login_page.should_be_redirected_from_login()
+    login_page.login_as(UserType.ADMIN, check_already_logged_in=True)
 
     return basis_adjustment_page
 
 
 @pytest.fixture
-def authenticated_user_page(user_page) -> UserPage:
-    """Return a UserPage instance with authenticated user"""
+def authenticated_user_page(login_page, user_page) -> UserPage:
+    """Return a UserPage instance with authenticated admin user"""
+    # Authenticate as admin
+    login_page.open()
+    login_page.login_as(UserType.ADMIN, check_already_logged_in=True)
+
+    # Open the user page
     user_page.open()
-    user_page.login("admin", "adminpassword")
     return user_page
 
 
 @pytest.fixture
-def authenticated_contact_page(contact_page, authenticated_user_page) -> ContactPage:
-    """Return a ContactPage instance with authenticated user"""
+def authenticated_contact_page(login_page, contact_page) -> ContactPage:
+    """Return a ContactPage instance with authenticated admin user"""
+    # Authenticate as admin
+    login_page.open()
+    login_page.login_as(UserType.ADMIN, check_already_logged_in=True)
+
+    # Open the contact page
     contact_page.open()
     return contact_page

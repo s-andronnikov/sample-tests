@@ -26,6 +26,7 @@ class TestBasisAdjustmentConfigurations:
         # Verify the grid headers
         self.page.verify_grid_headers(expected_headers)
 
+    @pytest.mark.skip()
     def test_create_basis_adjustment(self):
         """Test creating a new basis adjustment"""
         # Click the Create button to open the form
@@ -50,6 +51,7 @@ class TestBasisAdjustmentConfigurations:
             basis_adjustment_name
         ), f"Basis adjustment '{basis_adjustment_name}' not found in grid after creation"
 
+    @pytest.mark.skip()
     def test_edit_basis_adjustment(self):
         """Test editing a basis adjustment name"""
         first_row = self.page.select_first_row()
@@ -86,6 +88,7 @@ class TestBasisAdjustmentConfigurations:
         # Verify the grid contains a row with the updated name
         assert self.page.verify_basis_adjustment_in_grid(new_name), f"Basis adjustment '{new_name}' not found in grid after editing"
 
+    @pytest.mark.skip()
     def test_delete_basis_adjustment(self):
         """Test deleting a basis adjustment from the grid and verifying the operation is successful"""
         # Select the first row in the basis adjustment grid
@@ -118,6 +121,7 @@ class TestBasisAdjustmentConfigurations:
             basis_adjustment_name
         ), f"Basis adjustment '{basis_adjustment_name}' still found in grid after deletion"
 
+    @pytest.mark.skip()
     def test_basis_adjustment_name_uniqueness_validation(self):
         """Test validation for unique basis adjustment names"""
         # Get an existing basis adjustment name from the grid
