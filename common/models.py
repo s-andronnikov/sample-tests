@@ -18,8 +18,9 @@ class User(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
+    @classmethod
     @field_validator("username")
-    def username_must_be_valid(self, v):
+    def username_must_be_valid(cls, v):
         if len(v) < USERNAME_MIN_LENGTH:
             raise ValueError("Username must be at least 3 characters")
         return v
