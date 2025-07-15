@@ -5,19 +5,20 @@ from random import randint
 class BonusProfileDialog(BaseElement):
     """Dialog component for creating and editing bonus profiles"""
 
-    # Locators for dialog elements
-    form_container = Element(By.LOCATOR, ".modal")
-    form_title = Element(By.LOCATOR, ".modal-title")
-    name_input = Element(By.LOCATOR, "input[name='name']")
-    bonus_calculation_method_dropdown = Element(By.LOCATOR, "div[data-name='bonusCalculationMethod']")
-    bonus_percent_input = Element(By.LOCATOR, "input[name='bonusPercent']")
-    create_button = Element(By.LOCATOR, "button:has-text('Create')")
-    save_button = Element(By.LOCATOR, "button:has-text('Save')")
-    cancel_button = Element(By.LOCATOR, "button:has-text('Cancel')")
-    error_message = Element(By.LOCATOR, ".labeled-error")
+    def __init__(self, parent: BaseElement | None = None):
+        self.parent = parent
 
-    def __init__(self):
-        super().__init__(By.LOCATOR, ".modal")
+        self.form_container = Element(By.LOCATOR, ".configurations-form-wrapper")
+        self.form_title = Element(By.LOCATOR, ".title", self.form_container)
+        self.name_input = Element(By.LOCATOR, "input[name='name']", self.form_container)
+        self.bonus_calculation_method_dropdown = Element(By.LOCATOR, "[name='bonusMethod']", self.form_container)
+        self.bonus_percent_input = Element(By.LOCATOR, "input[name='bonusPercent']", self.form_container)
+
+        self.action_buttons_wrapper = Element(By.LOCATOR, ".action-buttons", self.form_container)
+        self.create_button = Element(By.LOCATOR, "button:has-text('Create')", self.action_buttons_wrapper)
+        self.save_button = Element(By.LOCATOR, "button:has-text('Save')", self.action_buttons_wrapper)
+        self.cancel_button = Element(By.LOCATOR, "button:has-text('Cancel')", self.action_buttons_wrapper)
+        self.error_message = Element(By.LOCATOR, ".labeled-error", self.form_container)
 
     def fill_form(self, name: str | None = None, bonus_calculation_method: str = "Standard", bonus_percent: float | None = None) -> str:
         """Fill the bonus profile creation form
