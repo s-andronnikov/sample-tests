@@ -2,6 +2,7 @@ import pytest
 
 from ui.pages.asset_class_page import AssetClassPage
 from ui.pages.basis_adjustment_page import BasisAdjustmentPage
+from ui.pages.bonus_profile_page import BonusProfilePage
 from ui.pages.contact_page import ContactPage
 from ui.pages.login_page import LoginPage
 from ui.pages.user_page import UserPage
@@ -37,6 +38,12 @@ def basis_adjustment_page():
     return BasisAdjustmentPage()
 
 
+@pytest.fixture(scope="class")
+def bonus_profile_page() -> BonusProfilePage:
+    """Return an AssetClassPage instance"""
+    return BonusProfilePage()
+
+
 @pytest.fixture
 def authenticated_user_page(login_page, user_page) -> UserPage:
     """Return a UserPage instance with authenticated admin user"""
@@ -59,13 +66,22 @@ def authenticated_asset_class_page(login_page, asset_class_page) -> AssetClassPa
 
 
 @pytest.fixture(scope="class")
-def authenticated_basis_adjustment_page(login_page, basis_adjustment_page):
+def authenticated_basis_adjustment_page(login_page, basis_adjustment_page) -> BasisAdjustmentPage:
     """Return a BasisAdjustmentPage instance with authenticated admin user"""
     # Open login page and authenticate as admin
     login_page.open()
     login_page.login_as(UserType.ADMIN, check_already_logged_in=True)
     login_page.should_be_redirected_from_login()
     return basis_adjustment_page
+
+
+@pytest.fixture(scope="class")
+def authenticated_bonus_profile_page(login_page, bonus_profile_page) -> BonusProfilePage:
+    login_page.open()
+    login_page.login_as(UserType.ADMIN, check_already_logged_in=True)
+    login_page.should_be_redirected_from_login()
+
+    return BonusProfilePage()
 
 
 @pytest.fixture

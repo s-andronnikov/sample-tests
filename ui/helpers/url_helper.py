@@ -68,6 +68,18 @@ class UrlHelper:
         return cls.build_full_url(UIRoutes.DEPRECIATION_BASIS_ADJUSTMENT, depr_case_id)
 
     @classmethod
+    def depreciation_bonus_profile(cls, depr_case_id: str) -> str:
+        """Build URL for depreciation bonus profile page
+
+        Args:
+            depr_case_id: The depreciation ID
+
+        Returns:
+            URL path for the depreciation bonus profile page
+        """
+        return cls.build_full_url(UIRoutes.DEPRECIATION_BONUS_PROFILE, depr_case_id)
+
+    @classmethod
     def user_details(cls, user_id: str) -> str:
         """Build URL for user details page
 

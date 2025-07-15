@@ -38,3 +38,4 @@ class UIRoutes:
     # Depreciation routes
     DEPRECIATION_ASSET_CLASS = "/depreciation/{}/configurations/asset-class"
     DEPRECIATION_BASIS_ADJUSTMENT = "/depreciation/{}/configurations/basis-adjustments"
+    DEPRECIATION_BONUS_PROFILE = "/depreciation/{}/configurations/bonus-profile"
