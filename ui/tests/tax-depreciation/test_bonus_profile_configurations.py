@@ -5,7 +5,6 @@ from ui.pages.bonus_profile_page import BonusProfilePage
 
 
 @pytest.mark.ui
-@pytest.mark.skip(reason="Test is not ready yet")
 class TestBonusProfileConfigurations:
     page: BonusProfilePage = None
 
@@ -42,7 +41,7 @@ class TestBonusProfileConfigurations:
         self.page.submit_form()
 
         # Verify the form is no longer visible (submitted successfully)
-        self.page.bonus_profile_dialog.should_be_visible(False)
+        self.page.bonus_profile_dialog.should_not_be_visible()
 
         # Wait for grid to reload after creation
         self.page.wait_for_grid_reload()
@@ -116,7 +115,7 @@ class TestBonusProfileConfigurations:
         self.page.save_edited_form()
 
         # Verify the edit form disappears
-        self.page.bonus_profile_dialog.should_be_visible(False)
+        self.page.bonus_profile_dialog.should_not_be_visible()
 
         # Wait for grid reload
         self.page.wait_for_grid_reload()

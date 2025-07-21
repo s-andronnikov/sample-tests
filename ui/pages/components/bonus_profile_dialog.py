@@ -2,7 +2,7 @@ from framework.ui.element import Element, By, BaseElement
 from random import randint
 
 
-class BonusProfileDialog(BaseElement):
+class BonusProfileDialog:
     """Dialog component for creating and editing bonus profiles"""
 
     def __init__(self, parent: BaseElement | None = None):
@@ -11,7 +11,11 @@ class BonusProfileDialog(BaseElement):
         self.form_container = Element(By.LOCATOR, ".configurations-form-wrapper")
         self.form_title = Element(By.LOCATOR, ".title", self.form_container)
         self.name_input = Element(By.LOCATOR, "input[name='name']", self.form_container)
+
         self.bonus_calculation_method_dropdown = Element(By.LOCATOR, "[name='bonusMethod']", self.form_container)
+        self.bonus_calculation_method_options_container = Element(By.LOCATOR, "[role='listbox']", self.bonus_calculation_method_dropdown)
+        self.bonus_calculation_method_options = Element(By.LOCATOR, "[role='option']", self.bonus_calculation_method_options_container)
+
         self.bonus_percent_input = Element(By.LOCATOR, "input[name='bonusPercent']", self.form_container)
 
         self.action_buttons_wrapper = Element(By.LOCATOR, ".action-buttons", self.form_container)
@@ -40,8 +44,15 @@ class BonusProfileDialog(BaseElement):
 
         # Select bonus calculation method
         self.bonus_calculation_method_dropdown.click()
-        method_option = Element(By.LOCATOR, f".dropdown-item:has-text('{bonus_calculation_method}')")
-        method_option.click()
+        self.bonus_calculation_method_options_container.should_be_visible()
+
+        # Find the option within the open dropdown menu
+        method_option = Element(
+            By.LOCATOR, f".text:has-text('{bonus_calculation_method}')", parent=self.bonus_calculation_method_options_container
+        )
+        method_option.should_be_visible().click()
+
+        self.form_container.click()
 
         # Fill bonus percent
         if bonus_percent is None:
@@ -102,3 +113,13 @@ class BonusProfileDialog(BaseElement):
             True if the button is enabled, False otherwise
         """
         return self.create_button.is_enabled()
+
+    def should_be_visible(self):
+        """Check if the dialog is visible"""
+        self.form_container.should_be_visible()
+        return self
+
+    def should_not_be_visible(self):
+        """Check if the dialog is not visible"""
+        self.form_container.should_be_visible(should_visible=False)
+        return self
