@@ -19,15 +19,32 @@ Currently need to work with UI tests only.
 UI tests stricture:
  - All tests located at /ui/tests folder and can be separated by following modules:
    - tax-depreciation: urls with __host__/depreciation/*
-   - dit: urls with __host__:__port__/dit/*
-   - provision: urls with __host__:__port__/provision/*
-   - nova: urls with __host__:__port__/nova/*
+   - dit: urls with {host_url}/dit/*
+   - provision: urls with {host_url}/provision/*
+   - nova: urls with {host_url}/nova/*
  - Each test files should has tests associated to page. Pages located at ui/pages and should be separated by modules in tests way.
  - Each isolated element on page like list grid or form can be isolated as separated component. Components located as /ui/pages/components
    and should be located using module/page folders structure.
 
+Helpers located: /ui/helpers
+ - url_helper.py: helper to build url using defined routes from UIRoutes (common/routes.py) and dynamic variables like "depr_case_id"
+ - ag_grid_helper.py: common helper with locators and actions for Ag-Grid grids.
 
-Can you add test for edit asset class name.
+Fixtures located at: ui/fixtures.py. In general using it to define pages as fixtures. Each page usually has two fixture - first: page itself,
+second one authenticated fixture with login action injections.
+
+
+
+---------------------------------
+
+Can you add test for Configurations Company page. URL is {host_url}/depreciation/{depr_case_id}/configurations/company
+
+You should cover following actions:
+
+1. Main Company page
+
+
+
 Steps:
  - Go to the Listing page  (`authenticated_asset_class_page.open_with_id(base_settings.depr_case_id)`)
  - Check that page is loaded and grip exists
