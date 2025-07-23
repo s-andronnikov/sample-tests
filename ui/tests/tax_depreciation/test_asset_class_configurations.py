@@ -1,7 +1,7 @@
 import pytest
 
 from config import base_settings
-from ui.pages.asset_class_page import AssetClassPage
+from ui.pages.tax_depreciation.asset_class_page import AssetClassPage
 
 
 @pytest.mark.ui
@@ -19,7 +19,7 @@ class TestAssetClassConfigurations:
         return authenticated_asset_class_page
 
     def test_asset_class_configurations_page_loads(self):
-        """Test that the tax-depreciation asset class configurations page loads successfully with correct grid headers"""
+        """Test that the tax_depreciation asset class configurations page loads successfully with correct grid headers"""
         # Constants
         expected_headers = ["Name", "Depreciation Profile", "Tags", "Actions"]
 

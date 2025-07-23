@@ -1,7 +1,7 @@
 import pytest
 
 from config import base_settings
-from ui.pages.basis_adjustment_page import BasisAdjustmentPage
+from ui.pages.tax_depreciation.basis_adjustment_page import BasisAdjustmentPage
 
 
 @pytest.mark.ui

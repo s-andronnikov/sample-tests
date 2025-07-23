@@ -4,7 +4,7 @@ from config import base_settings
 from framework.ui.driver import Driver
 from framework.ui.element import BaseElement, By
 from framework.ui.list_elements import Grid
-from ui.pages.components.contact_dialog import ContactDialog
+from ui.pages.tax_depreciation.components.contact_dialog import ContactDialog
 
 # Initialize Faker
 fake = Faker()

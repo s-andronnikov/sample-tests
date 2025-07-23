@@ -1,7 +1,7 @@
 import pytest
 
 from config import base_settings
-from ui.pages.depreciation_profile_page import DepreciationProfilePage
+from ui.pages.tax_depreciation.depreciation_profile_page import DepreciationProfilePage
 
 
 @pytest.mark.ui

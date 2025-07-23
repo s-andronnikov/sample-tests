@@ -1,7 +1,7 @@
 import pytest
 
 from config import base_settings
-from ui.pages.bonus_profile_page import BonusProfilePage
+from ui.pages.tax_depreciation.bonus_profile_page import BonusProfilePage
 
 
 @pytest.mark.ui
@@ -19,7 +19,7 @@ class TestBonusProfileConfigurations:
         return authenticated_bonus_profile_page
 
     def test_bonus_profile_configurations_page_loads(self):
-        """Test that the tax-depreciation bonus profile configurations page loads successfully with correct grid headers"""
+        """Test that the tax_depreciation bonus profile configurations page loads successfully with correct grid headers"""
         # Constants
         expected_headers = ["Name", "Bonus Calculation Method", "Bonus Percent", "Actions"]
 

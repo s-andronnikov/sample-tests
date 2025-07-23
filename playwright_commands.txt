@@ -39,7 +39,8 @@ All tests should use AI instructions, project context for UI tests and existed t
 
 Can you add test for Configurations Company page. URL is {host_url}/depreciation/{depr_case_id}/configurations/company.
 All tests should use AI instructions, project context for UI tests and existed tests as an example.
-
+Use correct forders naming for tests, pages and components based on chat instructions.
+Use Playwright MCP service to interact with browser and get the pages contexts.
 Main content locator is Element(By.LOCATOR, ".page-container .configurations")
 
 You should cover following actions:

@@ -1,13 +1,13 @@
 import pytest
 
-from ui.pages.asset_class_page import AssetClassPage
-from ui.pages.basis_adjustment_page import BasisAdjustmentPage
-from ui.pages.bonus_profile_page import BonusProfilePage
+from ui.pages.tax_depreciation.asset_class_page import AssetClassPage
+from ui.pages.tax_depreciation.basis_adjustment_page import BasisAdjustmentPage
+from ui.pages.tax_depreciation.bonus_profile_page import BonusProfilePage
 from ui.pages.contact_page import ContactPage
 from ui.pages.login_page import LoginPage
 from ui.pages.user_page import UserPage
 from ui.pages.login_page import UserType
-from ui.pages.depreciation_profile_page import DepreciationProfilePage
+from ui.pages.tax_depreciation.depreciation_profile_page import DepreciationProfilePage
 
 
 @pytest.fixture(scope="session")

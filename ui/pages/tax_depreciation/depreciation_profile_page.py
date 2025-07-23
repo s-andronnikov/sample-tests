@@ -2,7 +2,7 @@ from framework.ui.element import Element, By
 from ui.pages.base_page import BasePage
 from ui.helpers.ag_grid_helper import AgGridHelper
 from ui.helpers.url_helper import UrlHelper
-from ui.pages.components.depreciation_profile_dialog import DepreciationProfileDialog
+from ui.pages.tax_depreciation.components.depreciation_profile_dialog import DepreciationProfileDialog
 
 
 class DepreciationProfilePage(BasePage):
