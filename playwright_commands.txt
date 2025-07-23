@@ -33,15 +33,97 @@ Helpers located: /ui/helpers
 Fixtures located at: ui/fixtures.py. In general using it to define pages as fixtures. Each page usually has two fixture - first: page itself,
 second one authenticated fixture with login action injections.
 
-
+All tests should use AI instructions, project context for UI tests and existed tests as an example.
 
 ---------------------------------
 
-Can you add test for Configurations Company page. URL is {host_url}/depreciation/{depr_case_id}/configurations/company
+Can you add test for Configurations Company page. URL is {host_url}/depreciation/{depr_case_id}/configurations/company.
+All tests should use AI instructions, project context for UI tests and existed tests as an example.
+
+Main content locator is Element(By.LOCATOR, ".page-container .configurations")
 
 You should cover following actions:
 
-1. Main Company page
+1. Test Main Company page
+  - Should be loaded successfully:
+     - Should have title "Company"
+     - Active "Create" button
+     - Ag-grid grid with following headers: Name, Regulated, Closing Frequency, Tags, Actions
+
+2. Test Create Company
+  - Main Company page should have active "Create" button
+  - Clicking on it should open form component with following elements:
+     - Title is "Create Company"
+     - Input field with "Name" title
+     - Dropdown element with "Closing Frequency" title
+     - Regulated checkbox (should be off by default)
+     - Tags dropdown
+     - Actions buttons
+       - "Cancel" - should be enabled
+       - "Create" - should be disabled
+  - Fill form. Keep all form data to verify saved item.
+     - Name: fake title with "!" on beginning to have new item first in list sorting by name
+     - Closing Frequency: first item from possible options. You need to click on this element first to see dropdown options.
+     - Regulated: should be on
+     - Tags: first item from possible options. You need to click on this element first to see dropdown options.
+      And then click to form container to apply selected item
+  - Action button "Create" should became enabled (have no class "disabled")
+  - Click "Create" button
+  - Form should disappear
+  - Verify created item on Companies list grid
+    - Order grid by name by clicking on "Name" grid header. Near "Name" should appear sort indicator with asc icon
+    - Get the first item on grid.
+    - Verify Item data with entered form data based on form elements and grid header names. All data should be the same.
+
+3. Test Edit Item
+  - List grid should have first item (row)
+  - Click on the first row. Collect Item data from grid row.
+  - Actions icons in "Actions" cell should became visible.
+  - Click on edit (pencil) icon.
+  - Form component should appear on page with following:
+    - Form title is "Edit {Name}" - Where {Name} is the selected item "Name"
+    - "Name" input should have selected item "Name"
+    - "Closing Frequency" value should be equal Closing Frequency of selected item
+    - "Regulated" value should be equal Regulated value of selected item
+    - "Tags" value should be equal Tags value of selected item
+    - Actions buttons
+       - "Cancel" - should be enabled
+       - "Save" - should be disabled
+  - Change "Name" value by adding "!" on beginning. Keep new name to validate it.
+  - "Save" action button should became enabled (have no class "disabled")
+  - Click on "Save" button
+  - Form should disappear
+  - Verify edited item on Companies list grid
+    - Order grid by name by clicking on "Name" grid header. Near "Name" should appear sort indicator with asc icon
+    - Select first row item
+    - Name of selected item should be the same as edited one
+
+5. Test Copy Item
+  - List grid should have first item (row)
+  - Click on the first row. Collect Item data from grid row.
+  - Actions icons in "Actions" cell should became visible.
+  - Click on copy icon.
+  - Form component should appear on page with following:
+    - Form title is "Copying from {Name}" - Where {Name} is the selected item "Name"
+    - "Name" input should have selected item "Name"
+    - "Closing Frequency" value should be equal Closing Frequency of selected item
+    - "Regulated" value should be equal Regulated value of selected item
+    - "Tags" value should be equal Tags value of selected item
+    - Actions buttons
+       - "Cancel" - should be enabled
+       - "Create" - should be disabled
+  - Change "Name" value by adding "!" on beginning. Keep new name to validate it.
+  - "Create" action button should became enabled (have no class "disabled")
+  - Click on "Create" button
+  - Form should disappear
+  - Verify edited item on Companies list grid
+    - Order grid by name by clicking on "Name" grid header. Near "Name" should appear sort indicator with asc icon
+    - Select first row item
+    - Name of selected item should be the same as edited one
+
+6. Test delete item
+
+
 
 
 
