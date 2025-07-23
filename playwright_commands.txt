@@ -42,7 +42,7 @@ All tests should use AI instructions, project context for UI tests and existed t
 Use correct forders naming for tests, pages and components based on chat instructions.
 Use Playwright MCP service to interact with browser and get the pages contexts.
 Main content locator is Element(By.LOCATOR, ".page-container .configurations")
-
+For defining URL use `common/routes.py` and `ui/helpers/url_helper.py`
 You should cover following actions:
 
 1. Test Main Company page
