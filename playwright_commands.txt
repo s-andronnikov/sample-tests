@@ -48,7 +48,7 @@ You should cover following actions:
   - Should be loaded successfully:
      - Should have title "Company"
      - Active "Create" button
-     - Ag-grid grid with following headers: Name, Regulated, Closing Frequency, Tags, Actions
+     - Ag-grid grid with following headers (Build static list from headers from page snapshot)
 
 2. Test Create Company
   - Main Company page should have active "Create" button
