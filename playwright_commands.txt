@@ -18,13 +18,13 @@ Base Tests structures:
 Currently need to work with UI tests only.
 UI tests stricture:
  - All tests located at /ui/tests folder and can be separated by following modules:
-   - tax-depreciation: urls with __host__/depreciation/*
-   - dit: urls with {host_url}/dit/*
-   - provision: urls with {host_url}/provision/*
-   - nova: urls with {host_url}/nova/*
- - Each test files should has tests associated to page. Pages located at ui/pages and should be separated by modules in tests way.
+   - folder "tax-depreciation": urls with __host__/depreciation/*
+   - folder "dit": urls with {host_url}/dit/*
+   - folder "provision": urls with {host_url}/provision/*
+   - folder "nova": urls with {host_url}/nova/*
+ - Each test files should has tests associated to page. Pages located at ui/pages and should be separated by modules in tests way (see folders naming above).
  - Each isolated element on page like list grid or form can be isolated as separated component. Components located as /ui/pages/components
-   and should be located using module/page folders structure.
+   and should be located using module/page folders structure (see module folders naming above).
 
 Helpers located: /ui/helpers
  - url_helper.py: helper to build url using defined routes from UIRoutes (common/routes.py) and dynamic variables like "depr_case_id"
