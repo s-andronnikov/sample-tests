@@ -37,3 +37,28 @@ Steps:
     - Confirmation popup should disappear
     - Should be shown toster message with text "Successfully Deleted"
     - Deleted record should disappear from the listing grid
+
+
+
+can you create a new tests for the Depreciation profile page, url is http://localhost:3000/depreciation/9aa52b3f-f76d-438d-9557-92984bd9e1fc/configurations/depreciation-profile
+
+1. Page load. Test should open the page and verify the following
+  - Page loaded successfully
+  - Page should have title "Depreciation Profiles"
+  - Page should finish grid data loading
+  - Page should have grid with following headers expected_headers = [
+            "Name",
+            "Profile Description",
+            "Class Life",
+            "Bonus Eligible",
+            "Mid-Quarter Eligible",
+            "Amortization",
+            "Rate Type",
+            "Method",
+            "Convention",
+            "Life",
+            "Tags",
+            "Actions"
+        ]
+
+

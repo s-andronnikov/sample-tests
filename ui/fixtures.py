@@ -7,6 +7,7 @@ from ui.pages.contact_page import ContactPage
 from ui.pages.login_page import LoginPage
 from ui.pages.user_page import UserPage
 from ui.pages.login_page import UserType
+from ui.pages.depreciation_profile_page import DepreciationProfilePage
 
 
 @pytest.fixture(scope="session")
@@ -36,12 +37,6 @@ def asset_class_page() -> AssetClassPage:
 def basis_adjustment_page():
     """Return a BasisAdjustmentPage instance"""
     return BasisAdjustmentPage()
-
-
-@pytest.fixture(scope="class")
-def bonus_profile_page() -> BonusProfilePage:
-    """Return an AssetClassPage instance"""
-    return BonusProfilePage()
 
 
 @pytest.fixture
@@ -76,12 +71,32 @@ def authenticated_basis_adjustment_page(login_page, basis_adjustment_page) -> Ba
 
 
 @pytest.fixture(scope="class")
+def bonus_profile_page() -> BonusProfilePage:
+    """Return an AssetClassPage instance"""
+    return BonusProfilePage()
+
+
+@pytest.fixture(scope="class")
 def authenticated_bonus_profile_page(login_page, bonus_profile_page) -> BonusProfilePage:
     login_page.open()
     login_page.login_as(UserType.ADMIN, check_already_logged_in=True)
     login_page.should_be_redirected_from_login()
 
     return BonusProfilePage()
+
+
+@pytest.fixture(scope="class")
+def depreciation_profile_page() -> DepreciationProfilePage:
+    return DepreciationProfilePage()
+
+
+@pytest.fixture(scope="class")
+def authenticated_depreciation_profile_page(login_page, depreciation_profile_page) -> DepreciationProfilePage:
+    login_page.open()
+    login_page.login_as(UserType.ADMIN, check_already_logged_in=True)
+    login_page.should_be_redirected_from_login()
+
+    return depreciation_profile_page
 
 
 @pytest.fixture
