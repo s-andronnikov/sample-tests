@@ -18,7 +18,7 @@ Base Tests structures:
 Currently need to work with UI tests only.
 UI tests stricture:
  - All tests located at /ui/tests folder and can be separated by following modules:
-   - folder "tax-depreciation": urls with __host__/depreciation/*
+   - folder "tax_depreciation": urls with __host__/depreciation/*
    - folder "dit": urls with {host_url}/dit/*
    - folder "provision": urls with {host_url}/provision/*
    - folder "nova": urls with {host_url}/nova/*
