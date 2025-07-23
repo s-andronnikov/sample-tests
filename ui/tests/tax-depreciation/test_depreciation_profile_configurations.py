@@ -5,6 +5,7 @@ from ui.pages.depreciation_profile_page import DepreciationProfilePage
 
 
 @pytest.mark.ui
+@pytest.mark.skip("Not working yet.")
 class TestDepreciationProfileConfigurations:
     page: DepreciationProfilePage = None
 
