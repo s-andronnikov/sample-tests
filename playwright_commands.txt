@@ -9,7 +9,7 @@ Base JS UI frameworks is:
  - ag-grid-enterprise: >=34
  - ag-grid-react: >=34
 
-Testing framework is pytest + playwright-python
+Testing framework is pytest + playwright-python (sync version)
 
 Base Tests structures:
  - Types of tests:
@@ -31,8 +31,10 @@ Helpers located: /ui/helpers
  - url_helper.py: helper to build url using defined routes from UIRoutes (common/routes.py) and dynamic variables like "depr_case_id"
  - ag_grid_helper.py: common helper with locators and actions for Ag-Grid grids.
 
-Fixtures located at: ui/fixtures.py. In general using it to define pages as fixtures. Each page usually has two fixture - first: page itself,
+Fixtures initialisation located at: ui/fixtures.py. Do not use
 second one authenticated fixture with login action injections.
+
+config.py - define configuration variables
 
 All tests should use AI instructions, project context for UI tests and existed tests as an example.
 
@@ -44,6 +46,8 @@ Use correct forders naming for tests, pages and components based on chat instruc
 Use Playwright MCP service to interact with browser and get the pages contexts.
 Main content locator is Element(By.LOCATOR, ".page-container .configurations")
 For defining URL use `common/routes.py` and `ui/helpers/url_helper.py`
+as and example use ui/tests/tax_depreciation/test_bonus_profile_configurations.py
+
 You should cover following actions:
 
 1. Test Main Company page
