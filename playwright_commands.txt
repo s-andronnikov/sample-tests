@@ -88,9 +88,20 @@ Cower following actions by tests:
     - Name of selected item should be the same as edited one
 
 6. Test delete item
+  - List grid should have first item (row)
+  - Click on the first row. Collect Item data from grid row.
+  - Actions icons in "Actions" cell should became visible.
+  - Click on delete (trash) icon.
+  - Delete confirmation modal dialog (create page component for it) should appear with following elements:
+    - Title "Delete Location [name of selected item]"
+    - Content - "This action cannot be undone. Are you sure you want to delete this item?"
+    - Action buttons "Cancel" and "Delete"
+  - Click on "Delete" action button
+  - Confirmation modal dialog should disappear
+  - Verify deleting result
+    - Selected item should not be in the grid list.
 
-
-
+ ----------------------------------------
 
 
 Steps:
