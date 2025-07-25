@@ -3,6 +3,7 @@ Python package versions:
  - python: >=3.12
  - pytest: >=8.4
  - playwright: >=v1.53
+Python package manager is poetry >= 2.0.
 Base JS UI frameworks is:
  - react: >=18.3
  - ag-grid-enterprise: >=34
@@ -36,7 +37,7 @@ second one authenticated fixture with login action injections.
 All tests should use AI instructions, project context for UI tests and existed tests as an example.
 
 ---------------------------------
-
+host_url: http://localhost:3000/
 Can you add test for Configurations Company page. URL is {host_url}/depreciation/{depr_case_id}/configurations/company.
 All tests should use AI instructions, project context for UI tests and existed tests as an example.
 Use correct forders naming for tests, pages and components based on chat instructions.
